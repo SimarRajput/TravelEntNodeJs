@@ -209,6 +209,7 @@ function SearchData() {
     _pageCount = 0;
     _currentTab = "Results"
     $("#prevButton").hide();
+    _yelpReviews = "";
 
     UpdateProgress(10);
 
@@ -572,7 +573,6 @@ function ShowDetails(result, status) {
         FillMapDiv();
         FillReviewsDiv(_reviewSorting.Default);
         GetYelpBusiness();
-        ShowYelpReviews(_reviewSorting.Default);
     }
 }
 
@@ -979,11 +979,6 @@ function GetYelpBusiness() {
                     var id = mainResults.businesses[0].id;
                     GetYelpReviews(id);
                 }
-                else {
-                    var table = GetNoRecordsTable();
-                    $("#insideReviewsDiv").html(table);
-                    $("#reviewWebsiteName").html("Yelp Reviews");
-                }
             }
         });
 }
@@ -1006,13 +1001,13 @@ function GetYelpReviews(id) {
 }
 
 function ShowYelpReviews(sorting = "default") {
-    var reviews = _yelpReviews.reviews.slice();
-
-    if (ObjectEmpty(reviews) || reviews.length == 0) {
+    var reviews = "";
+    if (ObjectEmpty(_yelpReviews) || _yelpReviews.length == 0) {
         var table = GetNoRecordsTable();
         $("#insideReviewsDiv").html(table);
     }
     else {
+        reviews = _yelpReviews.reviews.slice();
         if (_reviewSorting.Default == sorting) {
             $("#sortOrder").html("Default");
         }
@@ -1134,7 +1129,7 @@ function ShowYelpReviews(sorting = "default") {
             mainDiv.append(imageAnchor);
             mainDiv.append(detailsDiv);
             $("#insideReviewsDiv").append(mainDiv);
-        } 
+        }
     }
     $("#reviewWebsiteName").html("Yelp Reviews");
 }
