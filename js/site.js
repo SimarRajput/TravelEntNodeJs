@@ -32,6 +32,7 @@ var _directionsService;
 var _dResult;
 var _currentTab = "Results";
 var _yelpReviews = "";
+var _currentReviewsSort = "default";
 
 $(function () {
     //Get Current Location
@@ -210,6 +211,7 @@ function SearchData() {
     _currentTab = "Results"
     $("#prevButton").hide();
     _yelpReviews = "";
+    _currentReviewsSort = "default";
 
     UpdateProgress(10);
 
@@ -571,7 +573,7 @@ function ShowDetails(result, status) {
         FillInfoDiv();
         FillPhotosDiv();
         FillMapDiv();
-        FillReviewsDiv(_reviewSorting.Default);
+        FillReviewsDiv();
         GetYelpBusiness();
     }
 }
@@ -801,7 +803,9 @@ function CalculateAndDisplayRoute() {
         });
 }
 
-function FillReviewsDiv(sorting = "default") {
+function FillReviewsDiv() {
+    var sorting = _currentReviewsSort;
+    
     var reviews = _dResult.reviews.slice();
 
     if (ObjectEmpty(reviews) || reviews.length == 0) {
@@ -1000,7 +1004,8 @@ function GetYelpReviews(id) {
         });
 }
 
-function ShowYelpReviews(sorting = "default") {
+function ShowYelpReviews() {
+    var sorting = _currentReviewsSort;
     var reviews = "";
     if (ObjectEmpty(_yelpReviews) || _yelpReviews.length == 0) {
         var table = GetNoRecordsTable();
@@ -1135,11 +1140,12 @@ function ShowYelpReviews(sorting = "default") {
 }
 
 function SortReviews(sorting) {
+    _currentReviewsSort = sorting;
     if ($("#reviewWebsiteName").html() == "Yelp Reviews") {
-        ShowYelpReviews(sorting);
+        ShowYelpReviews();
     }
     else if ($("#reviewWebsiteName").html() == "Google Reviews") {
-        FillReviewsDiv(sorting);
+        FillReviewsDiv();
     }
 }
 
@@ -1317,6 +1323,7 @@ function ClearVariables(event) {
     _rowCount = 1;
     _pageCount = 0;
     _currentPlaceId = "";
+    _currentReviewsSort = "default";
     localStorage.clear();
 
     event.preventDefault();
