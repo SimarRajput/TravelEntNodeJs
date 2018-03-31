@@ -69,7 +69,7 @@ $(function () {
                 favouriteTable.push(favRow.innerHTML);
                 localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
             }
-            
+
             ChangeTableInStorage(placeId, true);
         }
         $("#detailsStarButton").get(0).childNodes[1].className = "fas fa-star";
@@ -86,7 +86,7 @@ $(function () {
         var favouriteTable = JSON.parse(localStorage.getItem("favouriteTable"));
         favouriteTable.splice(delRow, 1);
         localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
-        
+
         $("#detailsStarButton").get(0).childNodes[1].className = "far fa-star";
         FillFavouriteTable();
         ChangeTableInStorage(delPlaceId, false);
@@ -136,7 +136,7 @@ $(function () {
         }
         var buttonClass = $(this).closest('tr')[0].childNodes[4].childNodes[0].childNodes[0].className;
         $("#detailsStarButton").get(0).childNodes[1].className = buttonClass;
-        
+
         localStorage.setItem("table" + _pageCount, $("#resultsDataTable").get(0).outerHTML);
     });
 
@@ -155,7 +155,7 @@ $(function () {
             $("#favDetailsButton").prop("disabled", false);
             $("#infoTab").tab("show");
             $("#detailsStarButton").get(0).childNodes[1].className = "fas fa-star";
-            
+
             GetDetails();
         }
     });
@@ -212,6 +212,8 @@ function SearchData() {
     $("#prevButton").hide();
     _yelpReviews = "";
     _currentReviewsSort = "default";
+    $("#detailsButton").prop("disabled", true);
+    $("#favDetailsButton").prop("disabled", true);
 
     UpdateProgress(10);
 
@@ -227,8 +229,7 @@ function SearchData() {
                 UpdateProgress(100);
                 CreateTableAndInsertRows(mainResults);
             },
-            error: function()
-            {
+            error: function () {
                 var table = GetNoRecordsTable(true);
                 $("#innerDivResult").html(table);
                 $("#detailsButton").hide();
@@ -241,35 +242,30 @@ function SearchData() {
 }
 
 function CreateTableAndInsertRows(mainResults) {
-    if(mainResults.Error != undefined || mainResults.results == undefined)
-    {
+    if (mainResults.Error != undefined || mainResults.results == undefined) {
         var table = GetNoRecordsTable(true);
         $("#innerDivResult").html(table);
         $("#detailsButton").hide();
         $("#pageButtons").hide();
     }
-    else
-    {
+    else {
         _pageCount += 1;
 
         var resultsArray = mainResults.results;
-        
-        if (resultsArray.length == 0) 
-        {
+
+        if (resultsArray.length == 0) {
             var table = GetNoRecordsTable();
             $("#innerDivResult").html(table);
             $("#detailsButton").hide();
             $("#pageButtons").hide();
         }
-        else 
-        {
+        else {
             _nextPageToken = mainResults.next_page_token;
 
             if (!ObjectEmpty(_nextPageToken)) {
                 $("#nextButton").show();
             }
-            else
-            {
+            else {
                 $("#nextButton").hide();
             }
 
@@ -363,7 +359,7 @@ function UpdateProgress(percentage) {
 
 function RefreshTable() {
     var table = localStorage.getItem("table" + _pageCount);
-    if(table != undefined)
+    if (table != undefined)
         $("#innerDivResult").html(table);
     $("#divResult").show();
 }
@@ -508,10 +504,9 @@ function FillFavouriteTable() {
 }
 
 function AddToFavourite(button) {
-    if(button.childNodes[1].className != "fas fa-star")
-    {
+    if (button.childNodes[1].className != "fas fa-star") {
         button.childNodes[1].className = "fas fa-star";
-        
+
         var favRow = $("#savedRow").html();
         if (localStorage.getItem("favouriteTable") == undefined) {
             localStorage.setItem("favouriteTable", JSON.stringify([favRow]));
@@ -747,10 +742,12 @@ function FillMapDiv() {
         });
     _directionsDisplay.setMap(map);
     _directionsDisplay.setPanel($("#right-panel").get(0));
+
+    if (!ObjectEmpty($("#right-panel").html()))
+        CalculateAndDisplayRoute();
 }
 
 function GetStreetView() {
-    $("#right-panel").empty();
     var mapMode = $("#detailsMap").attr("accessKey");
 
     if (mapMode == "Street") {
@@ -805,7 +802,7 @@ function CalculateAndDisplayRoute() {
 
 function FillReviewsDiv() {
     var sorting = _currentReviewsSort;
-    
+
     var reviews = _dResult.reviews.slice();
 
     if (ObjectEmpty(reviews) || reviews.length == 0) {
@@ -817,7 +814,6 @@ function FillReviewsDiv() {
             $("#sortOrder").html("Default");
         }
         else if (_reviewSorting.LowestRating == sorting) {
-            // sort by name
             reviews.sort(function (a, b) {
                 var nameA = a.rating;
                 var nameB = b.rating;
@@ -829,10 +825,8 @@ function FillReviewsDiv() {
                 }
                 return 0;
             });
-            $("#sortOrder").html("Lowest Rating");
         }
         else if (_reviewSorting.HighestRating == sorting) {
-            // sort by name
             reviews.sort(function (a, b) {
                 var nameA = a.rating;
                 var nameB = b.rating;
@@ -844,10 +838,8 @@ function FillReviewsDiv() {
                 }
                 return 0;
             });
-            $("#sortOrder").html("Highest Rating");
         }
         else if (_reviewSorting.LeastRecent == sorting) {
-            // sort by name
             reviews.sort(function (a, b) {
                 var nameA = new Date(a.time * 1000);
                 var nameB = new Date(b.time * 1000);
@@ -859,10 +851,8 @@ function FillReviewsDiv() {
                 }
                 return 0;
             });
-            $("#sortOrder").html("Least Recent");
         }
         else if (_reviewSorting.MostRecent == sorting) {
-            // sort by name
             reviews.sort(function (a, b) {
                 var nameA = new Date(a.time * 1000);
                 var nameB = new Date(b.time * 1000);
@@ -874,7 +864,6 @@ function FillReviewsDiv() {
                 }
                 return 0;
             });
-            $("#sortOrder").html("Most Recent");
         }
 
         $("#insideReviewsDiv").empty();
@@ -1017,7 +1006,6 @@ function ShowYelpReviews() {
             $("#sortOrder").html("Default");
         }
         else if (_reviewSorting.LowestRating == sorting) {
-            // sort by name
             reviews.sort(function (a, b) {
                 var nameA = a.rating;
                 var nameB = b.rating;
@@ -1029,10 +1017,8 @@ function ShowYelpReviews() {
                 }
                 return 0;
             });
-            $("#sortOrder").html("Lowest Rating");
         }
         else if (_reviewSorting.HighestRating == sorting) {
-            // sort by name
             reviews.sort(function (a, b) {
                 var nameA = a.rating;
                 var nameB = b.rating;
@@ -1044,10 +1030,8 @@ function ShowYelpReviews() {
                 }
                 return 0;
             });
-            $("#sortOrder").html("Highest Rating");
         }
         else if (_reviewSorting.LeastRecent == sorting) {
-            // sort by name
             reviews.sort(function (a, b) {
                 var nameA = new Date(a.time_created);
                 var nameB = new Date(b.time_created);
@@ -1059,10 +1043,8 @@ function ShowYelpReviews() {
                 }
                 return 0;
             });
-            $("#sortOrder").html("Least Recent");
         }
         else if (_reviewSorting.MostRecent == sorting) {
-            // sort by name
             reviews.sort(function (a, b) {
                 var nameA = new Date(a.time_created);
                 var nameB = new Date(b.time_created);
@@ -1074,7 +1056,6 @@ function ShowYelpReviews() {
                 }
                 return 0;
             });
-            $("#sortOrder").html("Most Recent");
         }
 
         $("#insideReviewsDiv").empty();
@@ -1141,11 +1122,31 @@ function ShowYelpReviews() {
 
 function SortReviews(sorting) {
     _currentReviewsSort = sorting;
+    SelectCurrentSort();
+
     if ($("#reviewWebsiteName").html() == "Yelp Reviews") {
         ShowYelpReviews();
     }
     else if ($("#reviewWebsiteName").html() == "Google Reviews") {
         FillReviewsDiv();
+    }
+}
+
+function SelectCurrentSort() {
+    if (_reviewSorting.Default == _currentReviewsSort) {
+        $("#sortOrder").html("Default");
+    }
+    else if (_reviewSorting.LowestRating == _currentReviewsSort) {
+        $("#sortOrder").html("Lowest Rating");
+    }
+    else if (_reviewSorting.HighestRating == _currentReviewsSort) {
+        $("#sortOrder").html("Highest Rating");
+    }
+    else if (_reviewSorting.LeastRecent == _currentReviewsSort) {
+        $("#sortOrder").html("Least Recent");
+    }
+    else if (_reviewSorting.MostRecent == _currentReviewsSort) {
+        $("#sortOrder").html("Most Recent");
     }
 }
 
@@ -1231,8 +1232,7 @@ function GetNextPageResults() {
                         $("#nextButton").hide();
                     }
                 },
-                error: function()
-                {
+                error: function () {
                     var table = GetNoRecordsTable(true);
                     $("#innerDivResult").html(table);
                     $("#detailsButton").hide();
@@ -1241,7 +1241,7 @@ function GetNextPageResults() {
                     $("#progressDiv").hide();
                     $("#divResult").show();
                 }
-                
+
             });
     }
     else {
