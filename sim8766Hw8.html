@@ -1,0 +1,312 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/regular.css" integrity="sha384-A/oR8MwZKeyJS+Y0tLZ16QIyje/AmPduwrvjeH6NLiLsp4cdE4uRJl8zobWXBm4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="css/site.css"/>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-rating.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+        <title>Travel and Entertainment Search</title>
+    </head>
+    <body ng-app="myApp" ng-controller="MainCtrl" >
+        <br>
+        <form class="needs-validation" novalidate >
+            <div class="container required container-fluid" style="background-color: whitesmoke; border-radius: 4px; border: 1px solid #807d7d56; width: 85%;">
+                <div style="margin: 20px 0px 40px 0px; text-align: center;">
+                    <h4>Travel and Entertainment Search</h4>
+                </div>
+                <div class="form-group col-md-11 ml-auto">
+                <div class="form-group row">
+                    <label for="keyword" id="keywordLabel" class="col-sm-2 col-form-label col-form-label-sm">Keyword</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control form-control-sm" id="keyWordText" required>
+                        <div class="invalid-feedback">
+                            Please enter a ketword.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="category" class="col-sm-2 col-form-label col-form-label-sm">Category</label>
+                    <div class="col-sm-5">
+                        <select class="form-control form-control-sm" id="category" style="border: 1px solid #ced4da">
+                            <option value="default" selected>Default</option>
+                            <option value="airport">Airport</option>
+                            <option value="amusement-park">Amusement Park</option>
+                            <option value="aquarium">Aquarium</option>
+                            <option value="art_gallery">Art Gallery</option>
+                            <option value="bakery">Bakery</option>
+                            <option value="bar">Bar</option>
+                            <option value="beauty_salon">Beauty Salon</option>
+                            <option value="bowling_alley">Bowling Alley</option>
+                            <option value="bus_station">Bus Station</option>
+                            <option value="cafe">Cafe</option>
+                            <option value="camp_ground">Camp Ground</option>
+                            <option value="carrental">Car Rental</option>
+                            <option value="casino">Casino</option>
+                            <option value="lodging">Lodging</option>
+                            <option value="movie_theatre">Movie Theatre</option>
+                            <option value="museum">Museum</option>
+                            <option value="night_club">Night Club</option>
+                            <option value="park">Park</option>
+                            <option value="parking">Parking</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="shopping_mall">Shopping Mall</option>
+                            <option value="stadium">Stadium</option>
+                            <option value="subway_station">Subway Station</option>
+                            <option value="taxi_stand">Taxi Stand</option>
+                            <option value="train_station">Train Station</option>
+                            <option value="transit_station">Transit Station</option>
+                            <option value="travel_agency">Travel Agency</option>
+                            <option value="zoo">Zoo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="distanceText" class="col-sm-2 col-form-label col-form-label-sm">Distance (Miles)</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control form-control-sm " style="border: 1px solid #ced4da" id="distanceText" placeholder="10">
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend id="fromLegend" class="col-form-label col-sm-2 pt-0 col-form-label-sm">From</legend>
+                        <div class="col-sm-8">
+                            <div class="form-check">
+                                <input id="radioCurLocation" class="form-check-input" type="radio" onclick="ClearLocation()" name="gridRadios"  value="" checked>
+                                <label class="form-check-label col-form-label-sm" style="color:black;" for="radioCurLocation">
+                                Current Location
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input id="radioOtherLocation" class="form-check-input" type="radio" onclick="ToggleTextbox(this);" name="gridRadios"  value="">
+                                <label class="form-check-label col-form-label-sm" style="color:black;" for="radioOtherLocation">
+                                Other. Please specify:
+                                </label>
+                                <input type="text" class="form-control form-control-sm" required onFocus="geolocate()" id="locationText" disabled placeholder="Enter a location">
+                                <div class="invalid-feedback">
+                                    Please enter a location.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group row ml-auto">
+                    <button type="button" id="searchButton" class="btn btn-primary btn-sm" onclick="SearchData()" disabled>
+                        <span class="fas fa-search"></span>
+                        Search
+                    </button>
+                    <button type="button" style="margin-left: 10px;" onclick="ClearVariables(event)" class="btn btn-light">Clear
+                    </button>
+                </div>
+            </div>
+            </div>
+        </form>
+        <br>
+        <ul class="nav nav-pills mb-3 justify-content-center container-fluid" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="divResultTab" data-toggle="pill" href="#divResult" role="tab" aria-controls="divResult" aria-selected="true">Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="divFavouriteTab" data-toggle="pill" href="#divFavourite" role="tab" aria-controls="divFavourite" aria-selected="false">Favourites</a>
+            </li>
+        </ul>
+        <br>
+        <div id="progressDiv" class="progress" style="width:85%; margin: 100px auto; display:none;">
+            <div id="progressBar" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="tab-content container-fluid" id="pills-tabContent" style="width: 85%">
+            <div id="detailsDiv" style="width: 100%; margin: 10px auto; display: none;" class="details-animate-hide" ng-hide="myValue">
+                <div id="headInfoDiv" style="width: 100%; margin: 10px auto; text-align:center;">
+                    <h4 id="infoHeading"></h4>
+                    <button class="btn btn-light" id="showListButton" onclick="HideDetailsDiv()" style="float: left;" ng-click="myValue=true">< List</button>
+                    <a href="" data-show-count="false" id ="twitterIntent" target="_blank" style="float: right; max-width: 38px; max-height: 38px">
+                        <img src="images/twitter.png" class="img-fluid" alt="Twitter">
+                    </a>
+                    <button id="detailsStarButton" onclick="AddToFavourite(this)" class="btn btn-light" style="float:right; margin-right: 10px; margin-bottom: 10px;">
+                        <span class="far fa-star"></span>
+                    </button>
+                    <p id="savedRow" style="display: none;"></p>
+                </div>
+                <div id="insideDetailsDiv" style="width: 100%; margin: 55px auto;">
+                    <ul id="detailsNav" class="nav nav-tabs justify-content-end container-fluid" style="width: 100%; margin: 10px auto;" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="infoTab" data-toggle="tab" href="#infoDiv" role="tab" aria-controls="info" aria-selected="true">Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="photosTab" data-toggle="tab" href="#photosDiv" role="tab" aria-controls="photos" aria-selected="false">Photos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="mapsTab" data-toggle="tab" href="#mapsDiv" role="tab" aria-controls="maps" aria-selected="false">Maps</a>
+                        </li>
+                        <li class="nav-item">
+                                <a class="nav-link" id="reviewsTab" data-toggle="tab" href="#reviewsDiv" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent" style="width: 100%; margin: 10px auto;">
+                        <div class="tab-pane fade show active" id="infoDiv" role="tabpanel" aria-labelledby="infoTab">
+                            <table id = "infoTable" class="table table-striped">
+                                <tbody>
+                                    <tr id="addressInfoRow">
+                                        <th scope="row">Address</th>
+                                        <td class="infoTd" id="addressInfo"></td>
+                                    </tr>
+                                    <tr id="phoneInfoRow">
+                                        <th scope="row">Phone Number</th>
+                                        <td class="infoTd" id="phoneInfo"></td>
+                                    </tr>
+                                    <tr id="priceInfoRow">
+                                        <th scope="row">Price Level</th>
+                                        <td class="infoTd" class="infoTd" id="priceInfo"></td>
+                                    </tr>
+                                    <tr id="ratingInfoRow">
+                                        <th scope="row">Rating</th>
+                                        <td class="infoTd" id="ratingInfo">
+                                            <p style="display:inline-block; margin: 0px 5px 0px 0px;"></p>
+                                            <input type="hidden" class="rating-tooltip" data-filled="fas fa-star" data-empty="far fa-star" data-readonly data-fractions="3" value="0"/>
+                                        </td>
+                                    </tr>
+                                    <tr id="googlePageInfoRow">
+                                        <th scope="row">Google Page</th>
+                                        <td class="infoTd" id="googlePageInfo">
+                                            <a href="" target="_blank"></a>
+                                        </td>
+                                    </tr>
+                                    <tr id="websiteInfoRow">
+                                        <th scope="row">Website</th>
+                                        <td class="infoTd" id="websiteInfo">
+                                            <a href="" target="_blank"></a>
+                                        </td>
+                                    </tr>
+                                    <tr id="hoursInfoRow">
+                                        <th scope="row">Hours</th>
+                                        <td class="infoTd" id="hoursInfo"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="photosDiv" role="tabpanel" aria-labelledby="photosTab">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div id="insidePhotosDiv" >
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="tab-pane fade" id="mapsDiv" role="tabpanel" aria-labelledby="mapsTab">
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="fromText">From</label>
+                                    <input type="text" class="form-control" value="Your Location" id="fromText">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                        <label for="toText">To</label>
+                                        <input type="text" class="form-control" id="toText" disabled>
+                                </div>
+                                <div class="form-group col-sm-2 mr-5">
+                                    <label for="tMode">Travel Mode</label>
+                                    <select id="tMode" class="form-control col-md-12">
+                                        <option value="DRIVING" selected>Driving</option>
+                                        <option value="WALKING">Walking</option>
+                                        <option value="BICYCLING">Bicycling</option>
+                                        <option value="TRANSIT">Transit</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-1 mt-auto">
+                                    <button type="button" onclick="CalculateAndDisplayRoute()" id="directionsButton" class="btn btn-primary">
+                                        Get Directions
+                                    </button>
+                                </div>
+                                <div class="form-group col-sm-1">
+                                    <a id="streetViewButton" onclick="GetStreetView()" style="float: left; max-width: 40px; max-height: 40px; margin-left: 5px;">
+                                        <img id="mapTypeImage" class="img-fluid" alt="Pegman">
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="detailsMap"></div>
+                            <div id="right-panel"></div>
+                        </div>
+                        <div class="tab-pane fade" id="reviewsDiv" role="tabpanel" aria-labelledby="reviewsTab">
+                            <div class="btn-group">
+                                <button id="reviewWebsiteName" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Google Reviews
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" onclick="FillReviewsDiv()" type="button">Google Reviews</button>
+                                    <button class="dropdown-item" onclick="ShowYelpReviews()" type="button">Yelp Reviews</button>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button id="sortOrder" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Default Order
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button onclick="SortReviews(this.value)" class="dropdown-item" value="default" type="button">Default Order</button>
+                                    <button onclick="SortReviews(this.value)" class="dropdown-item" value="highest_rating" type="button">Highest Rating</button>
+                                    <button onclick="SortReviews(this.value)" class="dropdown-item" value="lowest_rating" type="button">Lowest Rating</button>
+                                    <button onclick="SortReviews(this.value)" class="dropdown-item" value="most_recent" type="button">Most Recent</button>
+                                    <button onclick="SortReviews(this.value)" class="dropdown-item" value="least_recent" type="button">Least Recent</button>
+                                </div>
+                            </div>
+                            <div id="insideReviewsDiv" class="reviewContainer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="divResult" class="results-animate-hide table-responsive tab-pane fade show active" ng-hide="!myValue" style="width:100%; margin: 0px auto; display:none" role="tabpanel" aria-labelledby="divresultTab" >
+                <div id="detailsButtonDiv" style="width:100%; margin: 0px auto;">
+                    <button id="detailsButton" class="btn btn-light" ng-click="myValue=false" disabled style="float:right; margin-bottom: 10px;">Details ></button>
+                </div>
+                <div id="innerDivResult" style="width:100%; margin: 0px auto">
+                </div>
+                <br>
+                <div id="pageButtons" style="display: none;" class="form-group row justify-content-center">
+                    <button type="button" id="prevButton" onclick="GetPrevPageResults()" style="display:none;" class="btn btn-light">
+                        Previous
+                    </button>
+                    <button type="button" id="nextButton" style="margin-left: 20px;" class="btn btn-light" onclick="GetNextPageResults()">
+                        Next
+                    </button>
+                </div>
+            </div>
+            <div id="divFavourite" class="results-animate-hide table-responsive tab-pane fade"  ng-hide="!myValue" style="width:100%; margin: 0px auto; display:none" role="tabpanel" aria-labelledby="divFavouriteTab">
+                <div id="favDetailsButtonDiv" style="width:100%; margin: 0px auto">
+                        <button id="favDetailsButton" class="btn btn-light" ng-click="myValue=false" disabled style="float:right; margin-bottom: 10px;">Details ></button>
+                </div>
+                <div id="innerDivFavourite" style="width:100%; margin: 0px auto">
+
+                </div>
+            </div>
+        </div>
+        <div id="map"></div>
+        <div class="modal fade bd-example-modal-sm" id="openHourModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Open Hours</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <script type='text/javascript' src='js/moment.js'></script>
+        <script type='text/javascript' src='js/site.js'></script>
+        <script type='text/javascript' src='js/bootstrap-rating.js'></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCezipVJkYSdRmEtwdg37OEgW7_fODwvSU&libraries=places&callback=initAutocomplete"async defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>

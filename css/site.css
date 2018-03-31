@@ -1,0 +1,123 @@
+.btn-light
+{
+    border: 1px solid #ced4da;
+}
+
+#keywordLabel:after, #fromLegend:after
+{
+    content:"*";
+    color: red;
+}
+  
+input[type=radio]
+{
+    transform:scale(0.9);
+}
+
+.infoTd
+{
+    font-size: 12px;
+}
+
+.highlight 
+{ 
+    background-color:#fff3cd !important;
+}
+
+.details-animate-hide 
+{
+    transition: all 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940);
+    line-height: 20px;
+    opacity: 1;
+    position: relative;
+    left: 0px;
+}
+
+.details-animate-hide.ng-hide 
+{
+    opacity: 0;
+    left: -100%;
+    transition: none;
+}
+
+.results-animate-hide 
+{
+    transition: all 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940);
+    line-height: 20px;
+    opacity: 1;
+    position: relative;
+    right: 0px;
+}
+
+.results-animate-hide.ng-hide 
+{
+    opacity: 0;
+    right: -100%;
+    transition: none;
+}
+  
+
+
+.photosRow 
+{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+
+#detailsMap 
+{
+    height: 400px;
+    width: 100%;
+    display: block;
+}
+
+.reviewContainer
+{
+    margin: 20px 0 0 0;
+    overflow: auto
+}
+
+.fas.fa-star
+{
+    color: gold;
+    border-color: transparent;
+}
+
+#insideReviewsDiv .far.fa-star, #infoDiv .far.fa-star
+{
+    color: transparent;
+}
+
+#insidePhotosDiv 
+{
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+}
+
+#insidePhotosDiv img
+{ 
+    width: 100%; 
+    padding: 7px 0;
+}
+
+@media (max-width: 500px) 
+{		
+    #insidePhotosDiv 
+    {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+    }
+
+    #insidePhotosDiv img
+    { 
+        width: 100%; 
+        padding: 7px 0;
+    }
+    #pills-tabContent
+    {
+        width: 100% !important;
+    }
+}
