@@ -738,8 +738,9 @@ function FillPhotosDiv() {
                 var imageAnchor = document.createElement("a");
                 imageAnchor.target = "_blank";
                 imageAnchor.href = photos[i].getUrl({ 'maxWidth': photos[i].width, 'maxHeight': photos[i].height });
-                var image = document.createElement("img")
+                var image = document.createElement("img");
                 image.src = photos[i].getUrl({ 'maxWidth': 250, 'maxHeight': 300 });
+                image.alt = "";
                 imageAnchor.append(image);
 
                 $("#insidePhotosDiv").append(imageAnchor);
@@ -911,6 +912,7 @@ function FillReviewsDiv() {
             var image = document.createElement("img");
             image.style.width = "60px";
             image.style.height = "60px";
+            image.alt = "";
             image.src = reviews[i].profile_photo_url;
             image.style.display = "block";
             imageAnchor.appendChild(image);
@@ -1103,6 +1105,7 @@ function ShowYelpReviews() {
             var image = document.createElement("img");
             image.style.width = "60px";
             image.style.height = "60px";
+            image.alt = "";
             image.src = reviews[i].user.image_url;
             image.style.display = "block";
             imageAnchor.appendChild(image);
