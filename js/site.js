@@ -124,6 +124,10 @@ $(function () {
         $("#detailsDiv").hide();
         $("#divFavourite").hide();
 
+        var innerResultDiv = $("#innerDivResult").html().trim();
+        if(ObjectEmpty(innerResultDiv))
+            $("#detailsButton").hide();
+
         var scope = angular.element($("#divResultTab")).scope();
         scope.$apply(function () {
             scope.myValue = true;
@@ -231,7 +235,6 @@ function SearchData() {
     $("#divFavourite").hide();
     $("#divResult").hide();
     $("#progressDiv").show();
-    localStorage.clear();
     _rowCount = 1;
     _pageCount = 0;
     _currentTab = "Results"
