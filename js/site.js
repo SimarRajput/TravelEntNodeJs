@@ -131,7 +131,7 @@ $(function () {
         $("#divFavourite").hide();
         $("#pageButtons").show();
 
-        if(ObjectEmpty(_resultsArray)){
+        if (ObjectEmpty(_resultsArray)) {
             $("#detailsButton").hide();
             $("#pageButtons").hide();
         }
@@ -278,7 +278,7 @@ function SearchData() {
         });
 }
 
-function ClearTablesFromStorage(){
+function ClearTablesFromStorage() {
     localStorage.removeItem("table1");
     localStorage.removeItem("table2");
     localStorage.removeItem("table3");
@@ -375,10 +375,10 @@ function CreateTableAndInsertRows(mainResults) {
 
                 var cell = row.insertCell(-1);
                 cell.style.textAlign = "left";
-                if(CheckIfRowInFav(_resultsArray[i].place_id))
+                if (CheckIfRowInFav(_resultsArray[i].place_id))
                     cell.innerHTML = "<button id=\"starButton\" style=\"border: 1px solid #807d7d56;\" class=\"btn btn-default\"><span class=\"fas fa-star\"></span></button>";
                 else
-                cell.innerHTML = "<button id=\"starButton\" style=\"border: 1px solid #807d7d56;\" class=\"btn btn-default\"><span class=\"far fa-star\"></span></button>";
+                    cell.innerHTML = "<button id=\"starButton\" style=\"border: 1px solid #807d7d56;\" class=\"btn btn-default\"><span class=\"far fa-star\"></span></button>";
 
                 var cell = row.insertCell(-1);
                 cell.style.textAlign = "left";
@@ -401,7 +401,7 @@ function CreateTableAndInsertRows(mainResults) {
     $("#divResult").show();
 }
 
-function CheckIfRowInFav(placeID){
+function CheckIfRowInFav(placeID) {
     var ifRowExists = false;
     var favouriteTable = JSON.parse(localStorage.getItem("favouriteTable"));
 
@@ -414,7 +414,7 @@ function CheckIfRowInFav(placeID){
             ifRowExists = true;
             break;
         }
-        else{
+        else {
             ifRowExists = false;
         }
     }
@@ -794,7 +794,7 @@ function FillPhotosDiv() {
                 var imageAnchor = document.createElement("a");
                 imageAnchor.target = "_blank";
                 imageAnchor.href = photos[i].getUrl({ 'maxWidth': photos[i].width, 'maxHeight': photos[i].height });
-                
+
                 var image = document.createElement("img");
                 image.src = photos[i].getUrl({ 'maxWidth': 250, 'maxHeight': 300 });
                 image.alt = "";
@@ -1335,11 +1335,19 @@ function GetNextPageResults() {
             });
     }
     else {
+        var showNextPage = false;
+
         $("#innerDivResult").html(table);
         _pageCount += 1;
         $("#prevButton").show();
 
-        if (_pageCount == 3 || ObjectEmpty(_nextPageToken)) {
+        if (_pageCount == 2) {
+            var table = localStorage.getItem("table3");
+
+            if (ObjectEmpty(table))
+                showNextPage = true;
+        }
+        if (_pageCount == 3 || showNextPage) {
             $("#nextButton").hide();
         }
     }
@@ -1391,6 +1399,7 @@ function ClearVariables(event) {
         scope.myValue = true;
     })
 
+    $("#divResult").hide();
     $("#searchButton").prop('disabled', true);
 
     $("#keyWordText").focus();
@@ -1399,7 +1408,7 @@ function ClearVariables(event) {
     $("#distanceText").val("");
 
     $("#radioCurLocation").prop("checked", true).trigger("click");
-    
+
     $("#innerDivResult").empty();
     $("#detailsDiv").hide();
     $("#innerDivFavourite").empty();
@@ -1410,7 +1419,7 @@ function ClearVariables(event) {
     $("#favDetailsButton").prop("disabled", true);
     $('#divResultTab').tab('show');
     $("#insideReviewsDiv").empty();
-    
+
     _currentTab = "Results"
 
     _mapAlreadySet = false;
