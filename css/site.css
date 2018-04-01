@@ -89,14 +89,14 @@ input[type=radio]
     color: transparent;
 }
 
-#insidePhotosDiv 
+.insidePhotosDiv 
 {
     -webkit-column-count: 4;
     -moz-column-count: 4;
     column-count: 4;
 }
 
-#insidePhotosDiv img
+.insidePhotosDiv img
 { 
     width: 100%; 
     padding: 7px 0;
@@ -104,14 +104,14 @@ input[type=radio]
 
 @media (max-width: 500px) 
 {		
-    #insidePhotosDiv 
+    .insidePhotosDiv 
     {
         -webkit-column-count: 1;
         -moz-column-count: 1;
         column-count: 1;
     }
 
-    #insidePhotosDiv img
+    .insidePhotosDiv img
     { 
         width: 100%; 
         padding: 7px 0;

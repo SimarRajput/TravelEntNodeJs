@@ -130,8 +130,10 @@ $(function () {
         $("#divFavourite").hide();
 
         var innerResultDiv = $("#innerDivResult").html().trim();
-        if (ObjectEmpty(innerResultDiv))
+        if (ObjectEmpty(innerResultDiv)){
             $("#detailsButton").hide();
+            $("#pageButtons").hide();
+        }
 
         var scope = angular.element($("#divResultTab")).scope();
         scope.$apply(function () {
@@ -246,6 +248,7 @@ function SearchData() {
     $("#prevButton").hide();
     _yelpReviews = "";
     _currentReviewsSort = "default";
+    $("#insideReviewsDiv").empty();
     $("#detailsButton").prop("disabled", true);
     $("#favDetailsButton").prop("disabled", true);
 
@@ -621,7 +624,7 @@ function ShowDetails(result, status) {
         var twitterText = "Check out " + _dResult.name;
 
         if (!ObjectEmpty(_dResult.formatted_address))
-            twitterText += "located at " + _dResult.formatted_address + ". ";
+            twitterText += " located at " + _dResult.formatted_address + ". ";
 
         if (!ObjectEmpty(_dResult.website))
             twitterText += "Website: " + _dResult.website + "#TravelAndEntertainmentSearch. ";
@@ -761,27 +764,39 @@ function FillInfoDiv() {
 }
 
 function FillPhotosDiv() {
+    $("#photosDiv").empty();
     var photos = _dResult.photos;
     if (ObjectEmpty(photos) || photos.length == 0) {
         var table = GetNoRecordsTable();
-        $("#photosDiv").html(table)
+        $("#photosDiv").html(table);
     }
     else {
-        $("#insidePhotosDiv").html("");
+        var colDiv = document.createElement("div");
+        colDiv.className = "col-md-12";
+
+        var rowDiv = document.createElement("div");
+        rowDiv.className = "row";
+        colDiv.append(rowDiv);
+
+        var insidePhotosDiv = document.createElement("div");
+        insidePhotosDiv.className = "insidePhotosDiv";
 
         if (!ObjectEmpty(photos)) {
             for (var i = 0; i < photos.length; i++) {
                 var imageAnchor = document.createElement("a");
                 imageAnchor.target = "_blank";
                 imageAnchor.href = photos[i].getUrl({ 'maxWidth': photos[i].width, 'maxHeight': photos[i].height });
+                
                 var image = document.createElement("img");
                 image.src = photos[i].getUrl({ 'maxWidth': 250, 'maxHeight': 300 });
                 image.alt = "";
                 imageAnchor.append(image);
 
-                $("#insidePhotosDiv").append(imageAnchor);
+                insidePhotosDiv.append(imageAnchor);
             }
         }
+        rowDiv.append(insidePhotosDiv);
+        $("#photosDiv").append(colDiv);
     }
 }
 
@@ -868,16 +883,16 @@ function CalculateAndDisplayRoute() {
 
 function FillReviewsDiv() {
     var sorting = _currentReviewsSort;
+    var reviews = "";
 
-    var reviews = _dResult.reviews.slice();
-
-    if (ObjectEmpty(reviews) || reviews.length == 0) {
+    if (ObjectEmpty(_dResult.reviews) || _dResult.reviews.length == 0) {
         var table = GetNoRecordsTable();
         $("#insideReviewsDiv").html(table);
     }
     else {
+        reviews = _dResult.reviews.slice();
         if (_reviewSorting.Default == sorting) {
-            $("#sortOrder").html("Default");
+            $("#sortOrder").html("Default Order");
         }
         else if (_reviewSorting.LowestRating == sorting) {
             reviews.sort(function (a, b) {
@@ -1070,7 +1085,7 @@ function ShowYelpReviews() {
     else {
         reviews = _yelpReviews.reviews.slice();
         if (_reviewSorting.Default == sorting) {
-            $("#sortOrder").html("Default");
+            $("#sortOrder").html("Default Order");
         }
         else if (_reviewSorting.LowestRating == sorting) {
             reviews.sort(function (a, b) {
@@ -1202,7 +1217,7 @@ function SortReviews(sorting) {
 
 function SelectCurrentSort() {
     if (_reviewSorting.Default == _currentReviewsSort) {
-        $("#sortOrder").html("Default");
+        $("#sortOrder").html("Default Order");
     }
     else if (_reviewSorting.LowestRating == _currentReviewsSort) {
         $("#sortOrder").html("Lowest Rating");
@@ -1388,6 +1403,8 @@ function ClearVariables(event) {
     $("#detailsButton").prop("disabled", true);
     $("#favDetailsButton").prop("disabled", true);
     $('#divResultTab').tab('show');
+    $("#insideReviewsDiv").empty();
+    
     _currentTab = "Results"
 
     _mapAlreadySet = false;
