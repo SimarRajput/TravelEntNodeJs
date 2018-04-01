@@ -28,6 +28,7 @@ var _myLon = 0;
 var _dirOriginLat = 0;
 var _dirOriginLng = 0;
 var _rowCount = 1;
+var _favRowCount = 0;
 var _autocomplete, _autocompleteDetails, _placeSearch;
 var _nextPageToken;
 var _currentPlaceId;
@@ -38,6 +39,8 @@ var _resultsArray;
 var _currentTab = "Results";
 var _yelpReviews = "";
 var _currentReviewsSort = "default";
+var _favPerPageRows = 20;
+var _prevPageStart = 0;
 
 $(function () {
     //Get Current Location
@@ -129,7 +132,8 @@ $(function () {
         localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
 
         $("#detailsStarButton").get(0).childNodes[1].className = "far fa-star";
-        FillFavouriteTable();
+        _favRowCount = _favRowCount - (favouriteTable.length - _prevPageStart) - 1;
+        FillFavouriteTable(_prevPageStart, favouriteTable.length);
         ChangeTableInStorage(delPlaceId, false);
         return false;
     });
@@ -154,8 +158,11 @@ $(function () {
 
     $("ul#pills-tab li #divFavouriteTab").click(function () {
         _currentTab = "Favourite";
+        _favRowCount = 0;
+        _prevPageStart = 0;
         $("#divResult").hide();
         $("#detailsDiv").hide();
+        $("#favPrevButton").hide();
 
         var scope = angular.element($("#divFavouriteTab")).scope();
         scope.$apply(function () {
@@ -487,9 +494,55 @@ function GetNoRecordsTable(error = false) {
     return alertDiv;
 }
 
-function FillFavouriteTable() {
-    $("#innerDivFavourite").empty();
+function GetNextPageResultsFav() {
     var favRecords = JSON.parse(localStorage.getItem("favouriteTable"));
+    var noOfRecords = 0;
+    var nextNoOfRec = favRecords.length - _favRowCount;
+
+    $("#favPrevButton").show();
+
+    if (nextNoOfRec > _favPerPageRows) {
+        noOfRecords = _favPerPageRows;
+    } else {
+        noOfRecords = nextNoOfRec;
+    }
+
+    FillFavouriteTable(_favRowCount, _favRowCount + noOfRecords);
+
+    if (nextNoOfRec > _favPerPageRows) {
+        $("#favNextButton").show();
+    } else {
+        $("#favNextButton").hide();
+    }
+}
+
+function GetPrevPageResultsFav() {
+    var favRecords = JSON.parse(localStorage.getItem("favouriteTable"));
+    var rowCount = _rowCount;
+
+    if(_prevPageStart == _favPerPageRows)
+        $("#favPrevButton").hide();
+
+    _favRowCount = _prevPageStart - _favPerPageRows;
+    FillFavouriteTable(_favRowCount, _prevPageStart);
+
+    $("#favNextButton").show();
+    
+}
+
+function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
+    $("#innerDivFavourite").empty();
+    _prevPageStart = startRow;
+    
+    var favRecords = JSON.parse(localStorage.getItem("favouriteTable"));
+
+    if (favRecords.length <= _favPerPageRows) {
+        rowsLength = favRecords.length;
+    }
+    else if (favRecords.length > _favPerPageRows) {
+        $("#favNextButton").show();
+        $("#favPageButtons").show();
+    }
 
     if (favRecords == null || favRecords.length == 0) {
         var table = GetNoRecordsTable();
@@ -498,7 +551,6 @@ function FillFavouriteTable() {
         $("#favDetailsButton").prop("disabled", true);
     }
     else {
-        var rowCount = 1;
         var table = document.createElement("table");
         table.id = "favDataTable";
         table.align = "center";
@@ -538,15 +590,13 @@ function FillFavouriteTable() {
 
         var tableBody = document.createElement("tbody");
 
-
-        var favouriteTable = JSON.parse(localStorage.getItem("favouriteTable"));
-        for (var i = 0; i < favouriteTable.length; i++) {
-            var parsedRow = $.parseHTML(favouriteTable[i]);
+        for (var i = startRow; i < rowsLength; i++) {
+            var parsedRow = $.parseHTML(favRecords[i]);
 
             row = tableBody.insertRow(-1);
 
             var cell = row.insertCell(-1);
-            cell.innerHTML = rowCount;
+            cell.innerHTML = _favRowCount + 1;
             cell.accessKey = parsedRow[0].accessKey;
 
             var cell = row.insertCell(-1);
@@ -567,7 +617,7 @@ function FillFavouriteTable() {
             cell.style.textAlign = "left";
             cell.innerHTML = parsedRow[5].innerHTML;
 
-            rowCount += 1;
+            _favRowCount += 1;
         }
         table.appendChild(tableBody);
 
@@ -818,10 +868,10 @@ function FillPhotosDiv() {
 }
 
 function FillMapDiv() {
-    if($("#radioOtherLocation").prop("checked") == true) {
+    if ($("#radioOtherLocation").prop("checked") == true) {
         $("#fromText").val($("#locationText").val());
     }
-    
+
     $("#toText").val(_dResult.formatted_address);
     $("#detailsMap").attr("accessKey", "Maps");
     $("#mapTypeImage").attr("src", "images/pegman.png");
@@ -899,7 +949,7 @@ function CalculateAndDisplayRoute() {
     _directionsDisplay.setMap(map);
     _directionsDisplay.setPanel($("#right-panel").get(0));
 
-    if($("#fromText").val().toLowerCase() == "your location" || $("#fromText").val().toLowerCase() == "my location"){
+    if ($("#fromText").val().toLowerCase() == "your location" || $("#fromText").val().toLowerCase() == "my location") {
         _dirOriginLat = _myLat;
         _dirOriginLng = _myLon;
     }

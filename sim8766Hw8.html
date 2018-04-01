@@ -278,6 +278,14 @@
                         <button id="favDetailsButton" class="btn btn-light" ng-click="myValue=false" disabled style="float:right; margin-bottom: 10px;">Details ></button>
                 </div>
                 <div id="innerDivFavourite" style="width:100%; margin: 0px auto"></div>
+                <div id="favPageButtons" style="display: none;" class="form-group row justify-content-center">
+                    <button type="button" id="favPrevButton" onclick="GetPrevPageResultsFav()" style="display:none;" class="btn btn-light">
+                        Previous
+                    </button>
+                    <button type="button" id="favNextButton" style="margin-left: 20px;" class="btn btn-light" onclick="GetNextPageResultsFav()">
+                        Next
+                    </button>
+                </div>
             </div>
         </div>
         <div id="map"></div>
