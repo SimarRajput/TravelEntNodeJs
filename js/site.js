@@ -79,14 +79,17 @@ $(function () {
     });
 
     $('#divResult').on('click', '#innerDivResult #resultsDataTable tr #starButton', function () {
+        var favRow = $(this).closest('td').parent()[0];
+        var placeId = $(this).closest('td').parent()[0].childNodes[0].accessKey;
+
         var button = $(this).closest('td')[0].childNodes[0];
         var span = button.childNodes[0];
-        span.className = "fas fa-star";
 
-        var favRow = $(this).closest('td').parent()[0];
-        if (!FavExists(favRow)) {
-            var placeId = $(this).closest('td').parent()[0].childNodes[0].accessKey;
-
+        if (span.className == "fas fa-star") {
+            RemoveFavRow(favRow.innerHTML);
+            span.className = "far fa-star";
+        }
+        else {
             if (localStorage.getItem("favouriteTable") == undefined) {
                 localStorage.setItem("favouriteTable", JSON.stringify([favRow.innerHTML]));
             }
@@ -96,9 +99,11 @@ $(function () {
                 localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
             }
 
+            span.className = "fas fa-star";
+            $("#detailsStarButton").get(0).childNodes[1].className = "fas fa-star";
             ChangeTableInStorage(placeId, true);
         }
-        $("#detailsStarButton").get(0).childNodes[1].className = "fas fa-star";
+
         return false;
     });
 
@@ -125,7 +130,7 @@ $(function () {
         $("#divFavourite").hide();
 
         var innerResultDiv = $("#innerDivResult").html().trim();
-        if(ObjectEmpty(innerResultDiv))
+        if (ObjectEmpty(innerResultDiv))
             $("#detailsButton").hide();
 
         var scope = angular.element($("#divResultTab")).scope();
@@ -359,6 +364,9 @@ function CreateTableAndInsertRows(mainResults) {
 
                 var cell = row.insertCell(-1);
                 cell.style.textAlign = "left";
+                if(CheckIfRowInFav(resultsArray[i].place_id))
+                    cell.innerHTML = "<button id=\"starButton\" style=\"border: 1px solid #807d7d56;\" class=\"btn btn-default\"><span class=\"fas fa-star\"></span></button>";
+                else
                 cell.innerHTML = "<button id=\"starButton\" style=\"border: 1px solid #807d7d56;\" class=\"btn btn-default\"><span class=\"far fa-star\"></span></button>";
 
                 var cell = row.insertCell(-1);
@@ -380,6 +388,26 @@ function CreateTableAndInsertRows(mainResults) {
     UpdateProgress(0);
     $("#progressDiv").hide();
     $("#divResult").show();
+}
+
+function CheckIfRowInFav(placeID){
+    var ifRowExists = false;
+    var favouriteTable = JSON.parse(localStorage.getItem("favouriteTable"));
+
+    if (favouriteTable == null || favouriteTable.length == 0)
+        return false;
+
+    for (var i = 0; i < favouriteTable.length; i++) {
+        var favRow = $.parseHTML(favouriteTable[i]);
+        if (favRow[0].accessKey == placeID) {
+            ifRowExists = true;
+            break;
+        }
+        else{
+            ifRowExists = false;
+        }
+    }
+    return ifRowExists;
 }
 
 function UpdateProgress(percentage) {
@@ -533,10 +561,12 @@ function FillFavouriteTable() {
 }
 
 function AddToFavourite(button) {
-    if (button.childNodes[1].className != "fas fa-star") {
-        button.childNodes[1].className = "fas fa-star";
-
-        var favRow = $("#savedRow").html();
+    var favRow = $("#savedRow").html();
+    if (button.childNodes[1].className == "fas fa-star") {
+        RemoveFavRow(favRow);
+        button.childNodes[1].className = "far fa-star"
+    }
+    else {
         if (localStorage.getItem("favouriteTable") == undefined) {
             localStorage.setItem("favouriteTable", JSON.stringify([favRow]));
         }
@@ -546,25 +576,31 @@ function AddToFavourite(button) {
             localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
         }
         ChangeTableInStorage(_currentPlaceId, true);
+        button.childNodes[1].className = "fas fa-star";
     }
 }
 
-function FavExists(row) {
+function RemoveFavRow(row) {
     var favouriteTable = JSON.parse(localStorage.getItem("favouriteTable"));
-    var rowExists = false;
+    row = $.parseHTML(row);
+    var rowIndex = -1;
 
     if (favouriteTable == null || favouriteTable.length == 0)
         return false;
 
     for (var i = 0; i < favouriteTable.length; i++) {
-        if (favouriteTable[i] == row.innerHTML) {
-            rowExists = true;
+        var favRow = $.parseHTML(favouriteTable[i]);
+        if (favRow[0].accessKey == row[0].accessKey) {
+            rowIndex = i;
             break;
         }
-        else
-            rowExists = false;
     }
-    return rowExists;
+    if (rowIndex != -1) {
+        favouriteTable.splice(rowIndex, 1);
+        localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
+        $("#detailsStarButton").get(0).childNodes[1].className = "far fa-star";
+        ChangeTableInStorage(row[0].accessKey, false);
+    }
 }
 
 function GetDetails() {
@@ -1359,8 +1395,6 @@ function ClearVariables(event) {
     _pageCount = 0;
     _currentPlaceId = "";
     _currentReviewsSort = "default";
-    localStorage.clear();
-
     event.preventDefault();
 }
 
