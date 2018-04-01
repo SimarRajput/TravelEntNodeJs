@@ -266,6 +266,7 @@ function SearchData() {
     $("#insideReviewsDiv").empty();
     $("#detailsButton").prop("disabled", true);
     $("#favDetailsButton").prop("disabled", true);
+    $("#right-panel").empty();
 
     UpdateProgress(10);
 
@@ -520,20 +521,20 @@ function GetPrevPageResultsFav() {
     var favRecords = JSON.parse(localStorage.getItem("favouriteTable"));
     var rowCount = _rowCount;
 
-    if(_prevPageStart == _favPerPageRows)
+    if (_prevPageStart == _favPerPageRows)
         $("#favPrevButton").hide();
 
     _favRowCount = _prevPageStart - _favPerPageRows;
     FillFavouriteTable(_favRowCount, _prevPageStart);
 
     $("#favNextButton").show();
-    
+
 }
 
 function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
     $("#innerDivFavourite").empty();
     _prevPageStart = startRow;
-    
+
     var favRecords = JSON.parse(localStorage.getItem("favouriteTable"));
 
     if (favRecords.length <= _favPerPageRows) {
@@ -1552,7 +1553,7 @@ function fillInAddress() {
 
     _dirOriginLat = place.geometry.location.lat();
     _dirOriginLng = place.geometry.location.lng();
-    
+
     $("#searchButton").prop("disabled", false);
 }
 
