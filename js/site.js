@@ -1549,6 +1549,10 @@ function fillInAddress() {
     var place = _autocomplete.getPlace();
     _globalLat = place.geometry.location.lat();
     _globalLon = place.geometry.location.lng();
+
+    _dirOriginLat = place.geometry.location.lat();
+    _dirOriginLng = place.geometry.location.lng();
+    
     $("#searchButton").prop("disabled", false);
 }
 
