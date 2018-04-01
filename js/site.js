@@ -30,6 +30,7 @@ var _currentPlaceId;
 var _directionsDisplay;
 var _directionsService;
 var _dResult;
+var _resultsArray;
 var _currentTab = "Results";
 var _yelpReviews = "";
 var _currentReviewsSort = "default";
@@ -128,9 +129,9 @@ $(function () {
         _currentTab = "Results";
         $("#detailsDiv").hide();
         $("#divFavourite").hide();
+        $("#pageButtons").show();
 
-        var innerResultDiv = $("#innerDivResult").html().trim();
-        if (ObjectEmpty(innerResultDiv)){
+        if(ObjectEmpty(_resultsArray)){
             $("#detailsButton").hide();
             $("#pageButtons").hide();
         }
@@ -198,19 +199,16 @@ $(function () {
     });
 
     $('#detailsButtonDiv').on('click', '#detailsButton', function () {
-        $("#pageButtons").hide();
         $("#divResult").hide();
         $("#detailsDiv").show();
     });
 
     $('#favDetailsButtonDiv').on('click', '#favDetailsButton', function () {
-        $("#pageButtons").hide();
         $("#divFavourite").hide();
         $("#detailsDiv").show();
     });
 
     $('#divResult').on('click', '#resultsDataTable #sDetailButton', function () {
-        $("#pageButtons").hide();
         $("#divResult").hide();
         $("#detailsDiv").show();
 
@@ -221,7 +219,6 @@ $(function () {
     });
 
     $('#divFavourite').on('click', '#favDataTable #sDetailButton', function () {
-        $("#pageButtons").hide();
         $("#divFavourite").hide();
         $("#detailsDiv").show();
 
@@ -237,6 +234,7 @@ function SearchData() {
     scope.$apply(function () {
         scope.myValue = true;
     })
+    ClearTablesFromStorage();
     $('#divResultTab').tab('show');
     $("#detailsDiv").hide();
     $("#divFavourite").hide();
@@ -244,6 +242,7 @@ function SearchData() {
     $("#progressDiv").show();
     _rowCount = 1;
     _pageCount = 0;
+    _resultsArray = "";
     _currentTab = "Results"
     $("#prevButton").hide();
     _yelpReviews = "";
@@ -274,8 +273,15 @@ function SearchData() {
                 UpdateProgress(0);
                 $("#progressDiv").hide();
                 $("#divResult").show();
+                ClearTablesFromStorage();
             }
         });
+}
+
+function ClearTablesFromStorage(){
+    localStorage.removeItem("table1");
+    localStorage.removeItem("table2");
+    localStorage.removeItem("table3");
 }
 
 function CreateTableAndInsertRows(mainResults) {
@@ -284,17 +290,19 @@ function CreateTableAndInsertRows(mainResults) {
         $("#innerDivResult").html(table);
         $("#detailsButton").hide();
         $("#pageButtons").hide();
+        ClearTablesFromStorage();
     }
     else {
         _pageCount += 1;
 
-        var resultsArray = mainResults.results;
+        _resultsArray = mainResults.results;
 
-        if (resultsArray.length == 0) {
+        if (_resultsArray.length == 0) {
             var table = GetNoRecordsTable();
             $("#innerDivResult").html(table);
             $("#detailsButton").hide();
             $("#pageButtons").hide();
+            ClearTablesFromStorage();
         }
         else {
             _nextPageToken = mainResults.next_page_token;
@@ -344,30 +352,30 @@ function CreateTableAndInsertRows(mainResults) {
 
             var tableBody = document.createElement("tbody");
 
-            for (var i = 0; i < resultsArray.length; i++) {
+            for (var i = 0; i < _resultsArray.length; i++) {
                 row = tableBody.insertRow(-1);
 
                 var cell = row.insertCell(-1);
                 cell.innerHTML = _rowCount;
-                cell.accessKey = resultsArray[i].place_id;
+                cell.accessKey = _resultsArray[i].place_id;
                 cell.className = "align-middle";
 
                 var cell = row.insertCell(-1);
                 cell.className = "align-middle";
-                cell.innerHTML = '<img alt=\"\" style = "max-width: 30px; max-height: 30px;" src="' + resultsArray[i].icon + '"></img>';
+                cell.innerHTML = '<img alt=\"\" style = "max-width: 30px; max-height: 30px;" src="' + _resultsArray[i].icon + '"></img>';
 
                 var cell = row.insertCell(-1);
-                cell.innerHTML = resultsArray[i].name;
-                cell.accessKey = resultsArray[i].place_id;
+                cell.innerHTML = _resultsArray[i].name;
+                cell.accessKey = _resultsArray[i].place_id;
                 cell.className = "align-middle";
 
                 var cell = row.insertCell(-1);
-                cell.innerHTML = resultsArray[i].vicinity;
+                cell.innerHTML = _resultsArray[i].vicinity;
                 cell.className = "align-middle";
 
                 var cell = row.insertCell(-1);
                 cell.style.textAlign = "left";
-                if(CheckIfRowInFav(resultsArray[i].place_id))
+                if(CheckIfRowInFav(_resultsArray[i].place_id))
                     cell.innerHTML = "<button id=\"starButton\" style=\"border: 1px solid #807d7d56;\" class=\"btn btn-default\"><span class=\"fas fa-star\"></span></button>";
                 else
                 cell.innerHTML = "<button id=\"starButton\" style=\"border: 1px solid #807d7d56;\" class=\"btn btn-default\"><span class=\"far fa-star\"></span></button>";
@@ -1245,7 +1253,6 @@ function HideDetailsDiv() {
     }
     $("detailsDiv").hide();
     $("#detailsButton").show();
-    $("#pageButtons").show();
 }
 
 function CallIpApi() {
@@ -1392,8 +1399,7 @@ function ClearVariables(event) {
     $("#distanceText").val("");
 
     $("#radioCurLocation").prop("checked", true).trigger("click");
-
-    $("#pageButtons").hide();
+    
     $("#innerDivResult").empty();
     $("#detailsDiv").hide();
     $("#innerDivFavourite").empty();
