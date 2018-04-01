@@ -26,8 +26,8 @@
                     <label for="keyword" id="keywordLabel" class="col-sm-2 col-form-label col-form-label-sm">Keyword</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control form-control-sm" id="keyWordText" required>
-                        <div class="invalid-feedback">
-                            Please enter a ketword.
+                        <div id="keywordFeedback" class="invalid-feedback">
+                            Please enter a keyword.
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                                 Other. Please specify:
                                 </label>
                                 <input type="text" class="form-control form-control-sm" required onFocus="geolocate()" id="locationText" disabled placeholder="Enter a location">
-                                <div class="invalid-feedback">
+                                <div id="locationFeedback" class="invalid-feedback">
                                     Please enter a location.
                                 </div>
                             </div>

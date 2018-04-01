@@ -39,16 +39,42 @@ $(function () {
     CallIpApi();
 
     $("#keyWordText").blur(function () {
-        Validate();
+        if ($("#keyWordText").val().trim() == "") {
+            $("#keywordFeedback").css("display", "block");
+            $("#keyWordText").addClass("errorBorder");
+        }
     });
 
     $("#keyWordText").on('keyup', function () {
         var textValue = $("#keyWordText").val();
         textValue = textValue.trim();
         if (textValue != "") {
+            $("#keywordFeedback").css("display", "none");
+            $("#keyWordText").removeClass("errorBorder");
             $("#searchButton").prop('disabled', false);
         } else {
+            $("#keywordFeedback").css("display", "block");
+            $("#keyWordText").addClass("errorBorder");
             $("#searchButton").prop('disabled', true);
+        }
+    });
+
+    $("#locationText").blur(function () {
+        if ($("#locationText").val().trim() == "") {
+            $("#locationFeedback").css("display", "block");
+            $("#locationText").addClass("errorBorder");
+        }
+    });
+
+    $("#locationText").on('keyup', function () {
+        var textValue = $("#locationText").val();
+        textValue = textValue.trim();
+        if (textValue != "") {
+            $("#locationFeedback").css("display", "none");
+            $("#locationText").removeClass("errorBorder");
+        } else {
+            $("#locationFeedback").css("display", "block");
+            $("#locationText").addClass("errorBorder");
         }
     });
 
@@ -1301,6 +1327,9 @@ function ClearVariables(event) {
         scope.myValue = true;
     })
 
+    $("#searchButton").prop('disabled', true);
+
+    $("#keyWordText").focus();
     $("#keyWordText").val("");
     $("#category").val("default");
     $("#distanceText").val("");
@@ -1327,21 +1356,6 @@ function ClearVariables(event) {
     localStorage.clear();
 
     event.preventDefault();
-}
-
-function Validate() {
-    var validity;
-    var forms = $(".needs-validation");
-    Array.prototype.filter.call(forms, function (form) {
-        validity = form.checkValidity();
-        if (validity === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-
-    });
-    return validity;
 }
 
 function ObjectEmpty(value) {
