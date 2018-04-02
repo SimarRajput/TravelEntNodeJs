@@ -150,10 +150,11 @@ $(function () {
             $("#pageButtons").hide();
         }
 
-        var scope = angular.element($("#divResultTab")).scope();
+        var scope = angular.element($("body")).scope();
         scope.$apply(function () {
             scope.myValue = true;
-        })
+        });
+
         RefreshTable();
     });
 
@@ -164,11 +165,12 @@ $(function () {
         $("#divResult").hide();
         $("#detailsDiv").hide();
         $("#favPrevButton").hide();
-
-        var scope = angular.element($("#divFavouriteTab")).scope();
+        
+        var scope = angular.element($("body")).scope();
         scope.$apply(function () {
             scope.myValue = true;
-        })
+        });
+
         FillFavouriteTable();
     });
 
@@ -629,7 +631,6 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
         $("#innerDivFavourite").html(table);
     }
     $("#divFavourite").show();
-    $("#divFavourite").removeClass("ng-hide");
 }
 
 function AddToFavourite(button) {
@@ -1339,6 +1340,7 @@ function HideDetailsDiv() {
         $("#divResult").show();
     }
     else {
+        FillFavouriteTable();
         $("#divFavourite").show();
         $("#divResult").hide();
     }
