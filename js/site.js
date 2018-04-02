@@ -937,16 +937,14 @@ function CalculateAndDisplayRoute() {
     _directionsDisplay = new google.maps.DirectionsRenderer;
     _directionsService = new google.maps.DirectionsService;
 
-    var map = new google.maps.Map($("#detailsMap").get(0),
-        {
-            zoom: 16,
-            center: { lat: latitude, lng: longitude }
-        });
-    marker = new google.maps.Marker(
-        {
-            position: { lat: latitude, lng: longitude },
-            map: map
-        });
+    var map = new google.maps.Map($("#detailsMap").get(0), {
+        zoom: 16,
+        center: { lat: latitude, lng: longitude }
+    });
+    marker = new google.maps.Marker({
+        position: { lat: latitude, lng: longitude },
+        map: map
+    });
     _directionsDisplay.setMap(map);
     _directionsDisplay.setPanel($("#right-panel").get(0));
 
@@ -1554,7 +1552,7 @@ function fillInAddress() {
     _dirOriginLat = place.geometry.location.lat();
     _dirOriginLng = place.geometry.location.lng();
 
-    if($("#keywordText").val().trim != "")
+    if ($("#keywordText").val().trim != "")
         $("#searchButton").prop("disabled", false);
 }
 
