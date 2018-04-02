@@ -947,6 +947,7 @@ function CalculateAndDisplayRoute() {
         map: map
     });
     _directionsDisplay.setMap(map);
+    _directionsDisplay.setPanel($("#right-panel").get(0));
 
     if ($("#fromText").val().toLowerCase() == "your location" || $("#fromText").val().toLowerCase() == "my location") {
         _dirOriginLat = _myLat;
