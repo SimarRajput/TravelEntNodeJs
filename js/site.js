@@ -1554,7 +1554,8 @@ function fillInAddress() {
     _dirOriginLat = place.geometry.location.lat();
     _dirOriginLng = place.geometry.location.lng();
 
-    $("#searchButton").prop("disabled", false);
+    if($("#keywordText").val().trim != "")
+        $("#searchButton").prop("disabled", false);
 }
 
 function fillInAddressDetails() {
