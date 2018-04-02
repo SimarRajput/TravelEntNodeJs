@@ -88,6 +88,7 @@ $(function () {
         } else {
             $("#locationFeedback").css("display", "block");
             $("#locationText").addClass("errorBorder");
+            $("#searchButton").prop('disabled', true);
         }
     });
 
@@ -877,22 +878,21 @@ function FillMapDiv() {
     $("#detailsMap").attr("accessKey", "Maps");
     $("#mapTypeImage").attr("src", "images/pegman.png");
 
-    var latitude = _dResult["geometry"]["location"].lat();
-    var longitude = _dResult["geometry"]["location"].lng();
+    var latitude = _dResult.geometry.location.lat();
+    var longitude = _dResult.geometry.location.lng();
 
     _directionsDisplay = new google.maps.DirectionsRenderer;
     _directionsService = new google.maps.DirectionsService;
 
-    var map = new google.maps.Map($("#detailsMap").get(0),
-        {
-            zoom: 16,
-            center: { lat: latitude, lng: longitude }
-        });
-    marker = new google.maps.Marker(
-        {
-            position: { lat: latitude, lng: longitude },
-            map: map
-        });
+    var map = new google.maps.Map($("#detailsMap").get(0), {
+        zoom: 16,
+        center: { lat: latitude, lng: longitude }
+    });
+    marker = new google.maps.Marker({
+        position: { lat: latitude, lng: longitude },
+        map: map
+    });
+
     _directionsDisplay.setMap(map);
     _directionsDisplay.setPanel($("#right-panel").get(0));
 
@@ -931,8 +931,9 @@ function GetStreetView() {
 function CalculateAndDisplayRoute() {
     $("#right-panel").empty();
     $("#noDirections").remove();
-    var latitude = _dResult["geometry"]["location"].lat();
-    var longitude = _dResult["geometry"]["location"].lng();
+
+    var latitude = _dResult.geometry.location.lat();
+    var longitude = _dResult.geometry.location.lng();
 
     _directionsDisplay = new google.maps.DirectionsRenderer;
     _directionsService = new google.maps.DirectionsService;
@@ -946,23 +947,20 @@ function CalculateAndDisplayRoute() {
         map: map
     });
     _directionsDisplay.setMap(map);
-    _directionsDisplay.setPanel($("#right-panel").get(0));
 
     if ($("#fromText").val().toLowerCase() == "your location" || $("#fromText").val().toLowerCase() == "my location") {
         _dirOriginLat = _myLat;
         _dirOriginLng = _myLon;
     }
-
-    var latitude = _dResult.geometry.location.lat();
-    var longitude = _dResult.geometry.location.lng();
+    
     var selectedMode = $("#tMode").val();
 
     if (marker != "") {
         marker.setMap(null);
         marker = "";
     }
-    _directionsService.route(
-        {
+    
+    _directionsService.route({
             origin: { lat: _dirOriginLat, lng: _dirOriginLng },
             destination: { lat: latitude, lng: longitude },
             travelMode: google.maps.TravelMode[selectedMode],
@@ -1552,7 +1550,7 @@ function fillInAddress() {
     _dirOriginLat = place.geometry.location.lat();
     _dirOriginLng = place.geometry.location.lng();
 
-    if ($("#keywordText").val().trim != "")
+    if ($("#keyWordText").val().trim != "")
         $("#searchButton").prop("disabled", false);
 }
 
