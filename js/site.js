@@ -1354,7 +1354,7 @@ function CallIpApi() {
             type: "GET",
             dataType: 'json',
             url: "http://ip-api.com/json",
-            async: false,
+            async: true,
             success: function (data) {
                 if (!ObjectEmpty(data)) {
                     _globalLat = data.lat;
@@ -1458,24 +1458,6 @@ function GetPrevPageResults() {
     if (_pageCount == 1) {
         $("#prevButton").hide();
     }
-}
-
-function UpdateLatLang() {
-    var url = GetUrl(_urlQueryEnum.GeoCode);
-
-    $.ajax
-        ({
-            type: "GET",
-            dataType: 'json',
-            url: url,
-            async: false,
-            success: function (data) {
-                if (data != undefined || data != '') {
-                    _globalLat = data.results[0].geometry.location.lat;
-                    _globalLon = data.results[0].geometry.location.lng;
-                }
-            }
-        });
 }
 
 function ToggleTextbox(rdo) {
