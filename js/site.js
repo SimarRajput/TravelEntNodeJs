@@ -538,14 +538,6 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
 
     var favRecords = JSON.parse(localStorage.getItem("favouriteTable"));
 
-    if (favRecords.length <= _favPerPageRows) {
-        rowsLength = favRecords.length;
-    }
-    else if (favRecords.length > _favPerPageRows) {
-        $("#favNextButton").show();
-        $("#favPageButtons").show();
-    }
-
     if (favRecords == null || favRecords.length == 0) {
         var table = GetNoRecordsTable();
         $("#innerDivFavourite").html(table);
@@ -553,6 +545,14 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
         $("#favDetailsButton").prop("disabled", true);
     }
     else {
+        if (favRecords.length <= _favPerPageRows) {
+            rowsLength = favRecords.length;
+        }
+        else if (favRecords.length > _favPerPageRows) {
+            $("#favNextButton").show();
+            $("#favPageButtons").show();
+        }
+        
         var table = document.createElement("table");
         table.id = "favDataTable";
         table.align = "center";
