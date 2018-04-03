@@ -53,7 +53,7 @@ $(function () {
 
     $("#keyWordText").blur(function () {
         if ($("#keyWordText").val().trim() == "") {
-            $("#keywordFeedback").css("display", "block");
+            $("#keywordFeedback").show();
             $("#keyWordText").addClass("errorBorder");
         }
     });
@@ -62,11 +62,11 @@ $(function () {
         var textValue = $("#keyWordText").val();
         textValue = textValue.trim();
         if (textValue != "") {
-            $("#keywordFeedback").css("display", "none");
+            $("#keywordFeedback").hide();
             $("#keyWordText").removeClass("errorBorder");
             $("#searchButton").prop('disabled', false);
         } else {
-            $("#keywordFeedback").css("display", "block");
+            $("#keywordFeedback").show();
             $("#keyWordText").addClass("errorBorder");
             $("#searchButton").prop('disabled', true);
         }
@@ -74,7 +74,7 @@ $(function () {
 
     $("#locationText").blur(function () {
         if ($("#locationText").val().trim() == "") {
-            $("#locationFeedback").css("display", "block");
+            $("#locationFeedback").show();
             $("#locationText").addClass("errorBorder");
         }
     });
@@ -83,10 +83,10 @@ $(function () {
         var textValue = $("#locationText").val();
         textValue = textValue.trim();
         if (textValue != "") {
-            $("#locationFeedback").css("display", "none");
+            $("#locationFeedback").hide();
             $("#locationText").removeClass("errorBorder");
         } else {
-            $("#locationFeedback").css("display", "block");
+            $("#locationFeedback").show();
             $("#locationText").addClass("errorBorder");
             $("#searchButton").prop('disabled', true);
         }
@@ -1473,6 +1473,8 @@ function ClearLocation() {
     CallIpApi();
     $("#locationText").val("");
     $("#locationText").prop("disabled", true);
+    $("#locationText").removeClass("errorBorder");
+    $("#locationFeedback").hide();
 }
 
 function ClearVariables(event) {
@@ -1539,7 +1541,7 @@ function fillInAddress() {
     _dirOriginLat = place.geometry.location.lat();
     _dirOriginLng = place.geometry.location.lng();
 
-    if ($("#keyWordText").val().trim != "")
+    if ($("#keyWordText").val().trim() != "")
         $("#searchButton").prop("disabled", false);
 }
 
