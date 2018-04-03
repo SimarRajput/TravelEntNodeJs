@@ -1546,6 +1546,10 @@ function ClearLocation() {
     $("#locationText").prop("disabled", true);
     $("#locationText").removeClass("errorBorder");
     $("#locationFeedback").hide();
+
+    if($("#keyWordText").val().trim() != ""){
+        $("#searchButton").prop("disabled", false);
+    }
 }
 
 function ClearVariables(event) {
