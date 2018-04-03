@@ -64,7 +64,15 @@ $(function () {
         if (textValue != "") {
             $("#keywordFeedback").hide();
             $("#keyWordText").removeClass("errorBorder");
-            $("#searchButton").prop('disabled', false);
+
+            if($("#radioOtherLocation").prop("checked") == true){
+                if($("#locationText").val().trim() != "")
+                {
+                    $("#searchButton").prop('disabled', false);
+                }
+            } else {
+                $("#searchButton").prop('disabled', false);
+            } 
         } else {
             $("#keywordFeedback").show();
             $("#keyWordText").addClass("errorBorder");
