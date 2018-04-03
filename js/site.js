@@ -131,10 +131,12 @@ $(function () {
         var favouriteTable = JSON.parse(localStorage.getItem("favouriteTable"));
         favouriteTable.splice(delRow, 1);
         localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
-
+        
         $("#detailsStarButton").get(0).childNodes[1].className = "far fa-star";
-        _favRowCount = _favRowCount - (favouriteTable.length - _prevPageStart) - 1;
-        FillFavouriteTable(_prevPageStart, favouriteTable.length);
+        
+        _favRowCount = 0;
+        $('#favPrevButton').hide();
+        FillFavouriteTable();
         ChangeTableInStorage(delPlaceId, false);
         return false;
     });
@@ -522,7 +524,6 @@ function GetNextPageResultsFav() {
 
 function GetPrevPageResultsFav() {
     var favRecords = JSON.parse(localStorage.getItem("favouriteTable"));
-    var rowCount = _rowCount;
 
     if (_prevPageStart == _favPerPageRows)
         $("#favPrevButton").hide();
@@ -531,7 +532,6 @@ function GetPrevPageResultsFav() {
     FillFavouriteTable(_favRowCount, _prevPageStart);
 
     $("#favNextButton").show();
-
 }
 
 function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
@@ -553,6 +553,9 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
         else if (favRecords.length > _favPerPageRows) {
             $("#favNextButton").show();
             $("#favPageButtons").show();
+        }
+        else{
+            $("#favPageButtons").hide();
         }
         
         var table = document.createElement("table");
