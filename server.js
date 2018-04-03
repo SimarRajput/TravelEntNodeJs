@@ -45,7 +45,8 @@ http.createServer(function(serverRequest, serverResponse)
         finalUrl += "city=" + query.city + "&";
         finalUrl += "state=" + query.state + "&";
         finalUrl += "country=" + query.country + "&";
-        finalUrl += "address1=" + query.address1;
+        finalUrl += "address1=" + query.address1 + "&";
+        finalUrl += "postal_code=" + query.postalCode;
     }
     else if(mode == "yelpreviews")
     {

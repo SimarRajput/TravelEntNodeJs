@@ -1187,6 +1187,7 @@ function GetYelpBusiness() {
     var state = "";
     var country = "";
     var address1 = "";
+    var postalCode = "";
 
     var addressComp = _dResult.address_components;
     for (var i = 0; i < addressComp.length; i++) {
@@ -1204,12 +1205,16 @@ function GetYelpBusiness() {
         else if ($.inArray("country", types) > -1) {
             country = line.short_name;
         }
+        else if ($.inArray("postal_code", types) > -1) {
+            postalCode = line.short_name;
+        }
     }
 
     url += "city=" + city + "&";
     url += "state=" + state + "&";
     url += "country=" + country + "&";
     url += "address1=" + address1 + "&";
+    url += "postalCode=" + postalCode + "&";
     url += "mode=yelpmatch";
 
     $.ajax
