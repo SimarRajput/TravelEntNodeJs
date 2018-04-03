@@ -131,9 +131,9 @@ $(function () {
         var favouriteTable = JSON.parse(localStorage.getItem("favouriteTable"));
         favouriteTable.splice(delRow, 1);
         localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
-        
+
         $("#detailsStarButton").get(0).childNodes[1].className = "far fa-star";
-        
+
         _favRowCount = 0;
         $('#favPrevButton').hide();
         FillFavouriteTable();
@@ -167,7 +167,7 @@ $(function () {
         $("#divResult").hide();
         $("#detailsDiv").hide();
         $("#favPrevButton").hide();
-        
+
         var scope = angular.element($("body")).scope();
         scope.$apply(function () {
             scope.myValue = true;
@@ -530,7 +530,6 @@ function GetPrevPageResultsFav() {
 
     _favRowCount = _prevPageStart - _favPerPageRows;
     FillFavouriteTable(_favRowCount, _prevPageStart);
-
     $("#favNextButton").show();
 }
 
@@ -547,6 +546,7 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
         $("#favDetailsButton").prop("disabled", true);
     }
     else {
+
         if (favRecords.length <= _favPerPageRows) {
             rowsLength = favRecords.length;
         }
@@ -554,10 +554,10 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
             $("#favNextButton").show();
             $("#favPageButtons").show();
         }
-        else{
+        else {
             $("#favPageButtons").hide();
         }
-        
+
         var table = document.createElement("table");
         table.id = "favDataTable";
         table.align = "center";
@@ -957,31 +957,31 @@ function CalculateAndDisplayRoute() {
         _dirOriginLat = _myLat;
         _dirOriginLng = _myLon;
     }
-    
+
     var selectedMode = $("#tMode").val();
 
     if (marker != "") {
         marker.setMap(null);
         marker = "";
     }
-    
+
     _directionsService.route({
-            origin: { lat: _dirOriginLat, lng: _dirOriginLng },
-            destination: { lat: latitude, lng: longitude },
-            travelMode: google.maps.TravelMode[selectedMode],
-            provideRouteAlternatives: true
-        }, function (response, status) {
-            if (status == 'OK') {
-                _directionsDisplay.setDirections(response);
-            }
-            else {
-                var table = GetNoRecordsTable(false);
-                table.style.margin = "0px 0px 10px 0px";
-                table.id = "noDirections";
-                $("#mapsForm").append(table);
-                FillMapDiv();
-            }
-        });
+        origin: { lat: _dirOriginLat, lng: _dirOriginLng },
+        destination: { lat: latitude, lng: longitude },
+        travelMode: google.maps.TravelMode[selectedMode],
+        provideRouteAlternatives: true
+    }, function (response, status) {
+        if (status == 'OK') {
+            _directionsDisplay.setDirections(response);
+        }
+        else {
+            var table = GetNoRecordsTable(false);
+            table.style.margin = "0px 0px 10px 0px";
+            table.id = "noDirections";
+            $("#mapsForm").append(table);
+            FillMapDiv();
+        }
+    });
 }
 
 function FillReviewsDiv() {
