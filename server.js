@@ -16,8 +16,8 @@ http.createServer(function(serverRequest, serverResponse)
         finalUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
         finalUrl += "location=" + query.location + "&";
         finalUrl += "radius=" +  query.radius + "&";
-        finalUrl += "types=" +  query.types + "&";
-        finalUrl += "name=" +  query.name + "&";
+        finalUrl += "type=" +  query.type + "&";
+        finalUrl += "keyword=" +  query.keyword + "&";
         finalUrl += "key=AIzaSyCezipVJkYSdRmEtwdg37OEgW7_fODwvSU";
     }
     else if(mode == "geocode")
@@ -51,8 +51,6 @@ http.createServer(function(serverRequest, serverResponse)
     {
         finalUrl = "https://api.yelp.com/v3/businesses/";
         finalUrl += query.id + "/reviews";
-
-        console.log(finalUrl);
     }
     
     Run(serverRequest, serverResponse, finalUrl, mode);

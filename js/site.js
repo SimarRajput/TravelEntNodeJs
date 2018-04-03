@@ -8,6 +8,7 @@ var _urlQueryEnum =
         NextPage: "next_page",
         PlaceSearch: "place_search",
         GeoCode: "geo_code",
+        GeoCodeFrom: "geo_code_from",
         Details: "details"
     };
 
@@ -41,6 +42,8 @@ var _yelpReviews = "";
 var _currentReviewsSort = "default";
 var _favPerPageRows = 20;
 var _prevPageStart = 0;
+var _detLocationAlreadySet = false;
+var _locationAlreadySet = false;
 
 $(function () {
     //Get Current Location
@@ -65,14 +68,13 @@ $(function () {
             $("#keywordFeedback").hide();
             $("#keyWordText").removeClass("errorBorder");
 
-            if($("#radioOtherLocation").prop("checked") == true){
-                if($("#locationText").val().trim() != "")
-                {
+            if ($("#radioOtherLocation").prop("checked") == true) {
+                if ($("#locationText").val().trim() != "") {
                     $("#searchButton").prop('disabled', false);
                 }
             } else {
                 $("#searchButton").prop('disabled', false);
-            } 
+            }
         } else {
             $("#keywordFeedback").show();
             $("#keyWordText").addClass("errorBorder");
@@ -85,9 +87,62 @@ $(function () {
             $("#locationFeedback").show();
             $("#locationText").addClass("errorBorder");
         }
+        else {
+            var url = GetUrl(_urlQueryEnum.GeoCode);
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: url,
+                async: true,
+                success: function (mainResults) {
+                    if (!ObjectEmpty(mainResults.results)) {
+                        if (mainResults.results.length > 0) {
+                            if (!_locationAlreadySet) {
+                                var place = mainResults.results[0];
+                                _globalLat = place.geometry.location.lat;
+                                _globalLon = place.geometry.location.lng;
+
+                                _dirOriginLat = place.geometry.location.lat;
+                                _dirOriginLng = place.geometry.location.lng;
+
+                                if ($("#keyWordText").val().trim() != "")
+                                    $("#searchButton").prop("disabled", false);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    $("#fromText").blur(function (event) {
+        if ($("#fromText").val().trim() != "") {
+            var url = GetUrl(_urlQueryEnum.GeoCodeFrom);
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: url,
+                async: true,
+                success: function (mainResults) {
+                    if (!ObjectEmpty(mainResults.results)) {
+                        if (mainResults.results.length > 0) {
+                            if (!_detLocationAlreadySet) {
+                                var place = mainResults.results[0];
+                                _dirOriginLat = place.geometry.location.lat;
+                                _dirOriginLng = place.geometry.location.lng;
+
+                                if ($("#keyWordText").val().trim() != "")
+                                    $("#searchButton").prop("disabled", false);
+                            }
+                        }
+                    }
+                }
+            });
+        }
     });
 
     $("#locationText").on('keyup', function () {
+        _locationAlreadySet = false;
         var textValue = $("#locationText").val();
         textValue = textValue.trim();
         if (textValue != "") {
@@ -98,6 +153,10 @@ $(function () {
             $("#locationText").addClass("errorBorder");
             $("#searchButton").prop('disabled', true);
         }
+    });
+
+    $("#fromText").on('keyup', function () {
+        _detLocationAlreadySet = false;
     });
 
     $('#divResult').on('click', '#innerDivResult #resultsDataTable tr #starButton', function () {
@@ -968,11 +1027,6 @@ function CalculateAndDisplayRoute() {
 
     var selectedMode = $("#tMode").val();
 
-    if (marker != "") {
-        marker.setMap(null);
-        marker = "";
-    }
-
     _directionsService.route({
         origin: { lat: _dirOriginLat, lng: _dirOriginLng },
         destination: { lat: latitude, lng: longitude },
@@ -980,6 +1034,10 @@ function CalculateAndDisplayRoute() {
         provideRouteAlternatives: true
     }, function (response, status) {
         if (status == 'OK') {
+            if (marker != "") {
+                marker.setMap(null);
+                marker = "";
+            }
             _directionsDisplay.setDirections(response);
         }
         else {
@@ -987,7 +1045,7 @@ function CalculateAndDisplayRoute() {
             table.style.margin = "0px 0px 10px 0px";
             table.id = "noDirections";
             $("#mapsForm").append(table);
-            FillMapDiv();
+            _directionsDisplay.setMap(map);
         }
     });
 }
@@ -1395,12 +1453,17 @@ function GetUrl(mode) {
 
         url += "location=" + _globalLat + "," + _globalLon + "&";
         url += "radius=" + distance + "&";
-        url += "types=" + $("#category").val() + "&";
-        url += "name=" + $("#keyWordText").val() + "&mode=places";
+        url += "type=" + $("#category").val() + "&";
+        url += "keyword=" + $("#keyWordText").val() + "&mode=places";
     }
     else if (mode == _urlQueryEnum.GeoCode) {
         url += "location=";
         url += encodeURIComponent($('#locationText').val());
+        url += "&mode=geocode";
+    }
+    else if (mode == _urlQueryEnum.GeoCodeFrom) {
+        url += "location=";
+        url += encodeURIComponent($('#fromText').val());
         url += "&mode=geocode";
     }
     else if (mode == _urlQueryEnum.Details) {
@@ -1549,6 +1612,7 @@ function fillInAddress() {
     _dirOriginLat = place.geometry.location.lat();
     _dirOriginLng = place.geometry.location.lng();
 
+    _locationAlreadySet = true;
     if ($("#keyWordText").val().trim() != "")
         $("#searchButton").prop("disabled", false);
 }
@@ -1557,6 +1621,8 @@ function fillInAddressDetails() {
     var place = _autocompleteDetails.getPlace();
     _dirOriginLat = place.geometry.location.lat();
     _dirOriginLng = place.geometry.location.lng();
+
+    _detLocationAlreadySet = true;
 }
 
 function geolocate() {
