@@ -1343,6 +1343,7 @@ function HideDetailsDiv() {
         $("#divResult").show();
     }
     else {
+        _favRowCount = 0;
         FillFavouriteTable();
         $("#divFavourite").show();
         $("#divResult").hide();
