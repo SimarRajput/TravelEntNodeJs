@@ -670,7 +670,7 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
 
             row = tableBody.insertRow(-1);
 
-            if(parsedRow[0].accessKey == _currentPlaceId){
+            if (parsedRow[0].accessKey == _currentPlaceId) {
                 row.classList.add("highlight");
                 $("#favDetailsButton").prop("disabled", false);
                 $("#infoTab").tab("show");
@@ -1188,7 +1188,8 @@ function FillReviewsDiv() {
 }
 
 function GetYelpBusiness() {
-    var url = "http://googleapicalls.us-east-2.elasticbeanstalk.com?";
+    var url = "http://googleapicalls.us-east-2.elasticbeanstalk.com";
+    url += "/yelpmatch?"
     url += "name=" + _dResult.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "") + "&";
 
     var latitude = _dResult.geometry.location.lat();
@@ -1224,8 +1225,7 @@ function GetYelpBusiness() {
     url += "state=" + state + "&";
     url += "country=" + country + "&";
     url += "address1=" + address1 + "&";
-    url += "postalCode=" + postalCode + "&";
-    url += "mode=yelpmatch";
+    url += "postalCode=" + postalCode;
 
     $.ajax({
         type: "GET",
@@ -1249,9 +1249,9 @@ function GetYelpBusiness() {
 }
 
 function GetYelpReviews(id) {
-    var url = "http://googleapicalls.us-east-2.elasticbeanstalk.com?";
-    url += "id=" + id + "&";
-    url += "mode=yelpreviews";
+    var url = "http://googleapicalls.us-east-2.elasticbeanstalk.com";
+    url += "/yelpreviews?"
+    url += "id=" + id;
 
     $.ajax
         ({
@@ -1477,10 +1477,11 @@ function CallIpApi() {
 }
 
 function GetUrl(mode) {
-    var url = "http://googleapicalls.us-east-2.elasticbeanstalk.com?";
+    var url = "http://googleapicalls.us-east-2.elasticbeanstalk.com";
 
     if (mode == _urlQueryEnum.NextPage) {
-        url += "nextPageToken=" + _nextPageToken + "&mode=nextpage";
+        url += "/nextpage?"
+        url += "nextPageToken=" + _nextPageToken;
     }
     else if (mode == _urlQueryEnum.PlaceSearch) {
         var distance = $("#distanceText").val().trim();
@@ -1489,24 +1490,25 @@ function GetUrl(mode) {
             distance = (10 * 1609.34).toFixed();
         else
             distance = (distance * 1609.34).toFixed();
-
+        url += "/places?"
         url += "location=" + _globalLat + "," + _globalLon + "&";
         url += "radius=" + distance + "&";
         url += "type=" + $("#category").val() + "&";
-        url += "keyword=" + $("#keyWordText").val().trim() + "&mode=places";
+        url += "keyword=" + $("#keyWordText").val().trim();
     }
     else if (mode == _urlQueryEnum.GeoCode) {
+        url += "/geocode?"
         url += "location=";
         url += encodeURIComponent($('#locationText').val());
-        url += "&mode=geocode";
     }
     else if (mode == _urlQueryEnum.GeoCodeFrom) {
+        url += "/geocode?"
         url += "location=";
         url += encodeURIComponent($('#fromText').val());
-        url += "&mode=geocode";
     }
     else if (mode == _urlQueryEnum.Details) {
-        url += "placeId=" + _currentPlaceId + "&mode=details";
+        url += "/details?"
+        url += "placeId=" + _currentPlaceId;
     }
 
     return url;
