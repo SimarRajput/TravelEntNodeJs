@@ -1183,6 +1183,8 @@ function GetYelpBusiness() {
     var url = "http://googleapicalls.us-east-2.elasticbeanstalk.com?";
     url += "name=" + _dResult.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "") + "&";
 
+    var latitude = _dResult.geometry.location.lat();
+    var longitude = _dResult.geometry.location.lng();
     var city = "";
     var state = "";
     var country = "";
@@ -1217,19 +1219,25 @@ function GetYelpBusiness() {
     url += "postalCode=" + postalCode + "&";
     url += "mode=yelpmatch";
 
-    $.ajax
-        ({
-            type: "GET",
-            dataType: 'json',
-            url: url,
-            async: true,
-            success: function (mainResults) {
-                if (!ObjectEmpty(mainResults.businesses) && mainResults.businesses.length != 0) {
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: url,
+        async: true,
+        success: function (mainResults) {
+            if (!ObjectEmpty(mainResults.businesses) && mainResults.businesses.length != 0) {
+                var yelpLat = mainResults.businesses[0].coordinates.latitude;
+                var yelpLong = mainResults.businesses[0].coordinates.longitude;
+                var distance = 0;
+                distance = GetDistanceFromLatLonInKm(latitude, longitude, yelpLat, yelpLong);
+
+                if (distance < 0.5) {
                     var id = mainResults.businesses[0].id;
                     GetYelpReviews(id);
                 }
             }
-        });
+        }
+    });
 }
 
 function GetYelpReviews(id) {
@@ -1387,6 +1395,24 @@ function SortReviews(sorting) {
     else if ($("#reviewWebsiteName").html() == "Google Reviews") {
         FillReviewsDiv();
     }
+}
+
+function GetDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371;
+    var dLat = deg2rad(lat2 - lat1);
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180)
 }
 
 function SelectCurrentSort() {
@@ -1552,7 +1578,7 @@ function ClearLocation() {
     $("#locationText").removeClass("errorBorder");
     $("#locationFeedback").hide();
 
-    if($("#keyWordText").val().trim() != ""){
+    if ($("#keyWordText").val().trim() != "") {
         $("#searchButton").prop("disabled", false);
     }
 }
