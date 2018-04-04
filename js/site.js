@@ -1052,6 +1052,7 @@ function CalculateAndDisplayRoute() {
             var table = GetNoRecordsTable(false);
             table.style.margin = "0px 0px 10px 0px";
             table.id = "noDirections";
+            table.innerHTML = "Unable to find directions from specified location.";
             $("#mapsForm").append(table);
             _directionsDisplay.setMap(map);
         }
