@@ -1168,7 +1168,7 @@ function FillReviewsDiv() {
             }
 
             var ratingDate = document.createElement("p");
-            ratingDate.innerHTML = new Date(reviews[i].time * 1000);
+            ratingDate.innerHTML = moment.unix(reviews[i].time).format("YYYY-MM-DD hh:mm:ss");
             ratingDate.style.color = "lightgrey";
             ratingDate.style.marginBottom = "0px";
             ratingDate.style.display = "inline-block";
