@@ -6,7 +6,6 @@
   "aws-sdk": "latest",
   "body-parser": "latest",
   "bootstrap": "^4.0.0",
-  "ejs": "latest",
   "express": "latest",
   "request": "^2.85.0",
   "url": "^0.11.0"
