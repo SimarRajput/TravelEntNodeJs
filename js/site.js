@@ -1483,7 +1483,7 @@ function GetUrl(mode) {
         url += "nextPageToken=" + _nextPageToken + "&mode=nextpage";
     }
     else if (mode == _urlQueryEnum.PlaceSearch) {
-        var distance = $("#distanceText").val();
+        var distance = $("#distanceText").val().trim();
 
         if (distance == "" || distance == undefined)
             distance = (10 * 1609.34).toFixed();
@@ -1493,7 +1493,7 @@ function GetUrl(mode) {
         url += "location=" + _globalLat + "," + _globalLon + "&";
         url += "radius=" + distance + "&";
         url += "type=" + $("#category").val() + "&";
-        url += "keyword=" + $("#keyWordText").val() + "&mode=places";
+        url += "keyword=" + $("#keyWordText").val().trim() + "&mode=places";
     }
     else if (mode == _urlQueryEnum.GeoCode) {
         url += "location=";
