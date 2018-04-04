@@ -167,16 +167,16 @@ $(function () {
         var span = button.childNodes[0];
 
         if (span.className == "fas fa-star") {
-            RemoveFavRow(favRow.innerHTML);
+            RemoveFavRow(favRow.outerHTML);
             span.className = "far fa-star";
         }
         else {
             if (localStorage.getItem("favouriteTable") == undefined) {
-                localStorage.setItem("favouriteTable", JSON.stringify([favRow.innerHTML]));
+                localStorage.setItem("favouriteTable", JSON.stringify([favRow.outerHTML]));
             }
             else {
                 var favouriteTable = JSON.parse(localStorage.getItem("favouriteTable"));
-                favouriteTable.push(favRow.innerHTML);
+                favouriteTable.push(favRow.outerHTML);
                 localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
             }
 
@@ -247,7 +247,7 @@ $(function () {
         $(this).addClass("highlight").siblings().removeClass("highlight");
         var savedRow = $(this).closest('tr')[0];
 
-        $("#savedRow").html(savedRow.innerHTML);
+        $("#savedRow").html(savedRow.outerHTML);
 
         var placeNode = $(this).closest('tr')[0].childNodes[2];
 
@@ -270,7 +270,7 @@ $(function () {
         $(this).addClass("highlight").siblings().removeClass("highlight");
         var savedRow = $(this).closest('tr')[0];
 
-        $("#savedRow").html(savedRow.innerHTML);
+        $("#savedRow").html(savedRow.outerHTML);
 
         var placeNode = $(this).closest('tr')[0].childNodes[2];
 
@@ -499,7 +499,7 @@ function CheckIfRowInFav(placeID) {
 
     for (var i = 0; i < favouriteTable.length; i++) {
         var favRow = $.parseHTML(favouriteTable[i]);
-        if (favRow[0].accessKey == placeID) {
+        if (favRow[0].childNodes[0].accessKey == placeID) {
             ifRowExists = true;
             break;
         }
@@ -523,7 +523,6 @@ function RefreshTable() {
 
 function ChangeTableInStorage(delPlaceId, fillStar) {
     var className;
-
     if (fillStar)
         className = "fas fa-star";
     else
@@ -542,6 +541,7 @@ function ChangeTableInStorage(delPlaceId, fillStar) {
                     var starButton = row.childNodes[4];
                     var span = starButton.childNodes[0].childNodes[0];
                     span.className = className;
+                    row.classList.remove("highlight");
                     break;
                 }
             }
@@ -665,9 +665,18 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
         var tableBody = document.createElement("tbody");
 
         for (var i = startRow; i < rowsLength; i++) {
-            var parsedRow = $.parseHTML(favRecords[i]);
+            var outerRow = $.parseHTML(favRecords[i])[0];
+            var parsedRow = outerRow.childNodes;
 
             row = tableBody.insertRow(-1);
+
+            if(parsedRow[0].accessKey == _currentPlaceId){
+                row.classList.add("highlight");
+                $("#favDetailsButton").prop("disabled", false);
+                $("#infoTab").tab("show");
+                $("#detailsStarButton").get(0).childNodes[1].className = "fas fa-star";
+                GetDetails();
+            }
 
             var cell = row.insertCell(-1);
             cell.innerHTML = _favRowCount + 1;
@@ -696,7 +705,6 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
         table.appendChild(tableBody);
 
         $("#favDetailsButton").show();
-        $("#favDetailsButton").prop("disabled", true);
         $("#detailsDiv").hide();
         $("#innerDivFavourite").html(table);
     }
@@ -733,7 +741,7 @@ function RemoveFavRow(row) {
 
     for (var i = 0; i < favouriteTable.length; i++) {
         var favRow = $.parseHTML(favouriteTable[i]);
-        if (favRow[0].accessKey == row[0].accessKey) {
+        if (favRow[0].childNodes[0].accessKey == row[0].childNodes[0].accessKey) {
             rowIndex = i;
             break;
         }
@@ -742,7 +750,7 @@ function RemoveFavRow(row) {
         favouriteTable.splice(rowIndex, 1);
         localStorage.setItem("favouriteTable", JSON.stringify(favouriteTable));
         $("#detailsStarButton").get(0).childNodes[1].className = "far fa-star";
-        ChangeTableInStorage(row[0].accessKey, false);
+        ChangeTableInStorage(row[0].childNodes[0].accessKey, false);
     }
 }
 
