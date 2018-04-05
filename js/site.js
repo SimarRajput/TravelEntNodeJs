@@ -1160,11 +1160,11 @@ function FillReviewsDiv() {
             var mainDiv = document.createElement("div");
             mainDiv.style.border = "1px solid lightgrey";
             mainDiv.style.marginBottom = "10px";
-            mainDiv.style.padding = "0px 10px 10px 0px";
+            mainDiv.style.padding = "10px 10px 15px 10px";
 
             var imageAnchor = document.createElement("a");
             imageAnchor.style.float = "left";
-            imageAnchor.style.margin = "10px 0px 0px 10px";
+            imageAnchor.style.margin = "5px 0px 0px 10px";
             imageAnchor.href = reviews[i].author_url;
             imageAnchor.target = "_blank";
 
@@ -1370,11 +1370,11 @@ function ShowYelpReviews() {
             var mainDiv = document.createElement("div");
             mainDiv.style.border = "1px solid lightgrey";
             mainDiv.style.marginBottom = "10px";
-            mainDiv.style.padding = "0px 10px 10px 0px";
+            mainDiv.style.padding = "10px 10px 10px 10px";
 
             var imageAnchor = document.createElement("a");
             imageAnchor.style.float = "left";
-            imageAnchor.style.margin = "10px 0px 0px 10px";
+            imageAnchor.style.margin = "5px 0px 0px 10px";
             imageAnchor.href = reviews[i].url;
             imageAnchor.target = "_blank";
 
