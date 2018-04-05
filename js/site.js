@@ -51,6 +51,12 @@ $(function () {
     CallIpApi();
 
     $("#fromText").on('keyup', function () {
+        if($("#fromText").val().trim() != ""){
+            $("#directionsButton").prop("disabled", false);
+        } else{
+            $("#directionsButton").prop("disabled", true);
+        }
+        _detLocationAlreadySet = false;
         _dirOriginLat = 0;
         _dirOriginLng = 0;
     });
@@ -132,8 +138,7 @@ $(function () {
                                 _dirOriginLat = place.geometry.location.lat;
                                 _dirOriginLng = place.geometry.location.lng;
 
-                                if ($("#keyWordText").val().trim() != "")
-                                    $("#searchButton").prop("disabled", false);
+                                $("#directionsButton").prop("disabled", false);
                             }
                         }
                     }
@@ -154,10 +159,6 @@ $(function () {
             $("#locationText").addClass("errorBorder");
             $("#searchButton").prop('disabled', true);
         }
-    });
-
-    $("#fromText").on('keyup', function () {
-        _detLocationAlreadySet = false;
     });
 
     $('#divResult').on('click', '#innerDivResult #resultsDataTable tr #starButton', function () {
@@ -978,6 +979,10 @@ function FillMapDiv() {
         $("#fromText").val($("#locationText").val());
     }
 
+    if ($("#fromText").val().toLowerCase() == "your location" || $("#fromText").val().toLowerCase() == "my location") {
+        $("#directionsButton").prop("disabled", false);
+    }
+    
     $("#toText").val(_dResult.formatted_address);
     $("#detailsMap").attr("accessKey", "Maps");
     $("#mapTypeImage").attr("src", "images/pegman.png");
@@ -1694,6 +1699,7 @@ function fillInAddressDetails() {
     _dirOriginLng = place.geometry.location.lng();
 
     _detLocationAlreadySet = true;
+    $("#directionsButton").prop("disabled", false);
 }
 
 function geolocate() {
