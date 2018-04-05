@@ -1680,6 +1680,7 @@ function ClearVariables(event) {
     _pageCount = 0;
     _currentPlaceId = "";
     _currentReviewsSort = "default";
+    _resultsArray = "";
     event.preventDefault();
 }
 
