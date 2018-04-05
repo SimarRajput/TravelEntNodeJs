@@ -1164,7 +1164,7 @@ function FillReviewsDiv() {
 
             var imageAnchor = document.createElement("a");
             imageAnchor.style.float = "left";
-            imageAnchor.style.margin = "5px 0px 0px 10px";
+            imageAnchor.style.margin = "4px 0px 0px 10px";
             imageAnchor.href = reviews[i].author_url;
             imageAnchor.target = "_blank";
 
