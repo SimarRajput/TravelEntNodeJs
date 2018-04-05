@@ -125,10 +125,10 @@
                 <div id="headInfoDiv" style="width: 100%; margin: 10px auto; text-align:center;">
                     <h4 id="infoHeading"></h4>
                     <button class="btn btn-light" id="showListButton" onclick="HideDetailsDiv()" style="float: left;" ng-click="detDivValue=true">< List</button>
-                    <a href="" data-show-count="false" id ="twitterIntent" target="_blank" style="float: right; max-width: 38px; max-height: 38px">
+                    <a href="" data-show-count="false" id ="twitterIntent" target="_blank" class="disableAnchor" style="float: right; max-width: 38px; max-height: 38px">
                         <img src="images/twitter.png" class="img-fluid" alt="Twitter">
                     </a>
-                    <button id="detailsStarButton" onclick="AddToFavourite(this)" class="btn btn-light" style="float:right; margin-right: 10px; margin-bottom: 10px;">
+                    <button id="detailsStarButton" onclick="AddToFavourite(this)" disabled class="btn btn-light" style="float:right; margin-right: 10px; margin-bottom: 10px;">
                         <span class="far fa-star"></span>
                     </button>
                     <p id="savedRow" style="display: none;"></p>

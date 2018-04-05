@@ -343,6 +343,8 @@ function SearchData() {
         scope.detDivValue = true;
     });
     ClearTablesFromStorage();
+    $("#detailsStarButton").prop("disabled", true);
+    $("#twitterIntent").addClass("disableAnchor");
     $('#divResultTab').tab('show');
     $("#detailsDiv").hide();
     $("#divFavourite").hide();
@@ -794,6 +796,9 @@ function GetDetails() {
 function ShowDetails(result, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         _dResult = result;
+        $("#detailsStarButton").prop("disabled", false);
+        $("#twitterIntent").removeClass("disableAnchor");
+        
         $("#infoHeading").html(_dResult.name);
         var twitterText = "Check out " + _dResult.name;
 
