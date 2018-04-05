@@ -3,9 +3,6 @@
  "version": "0.0.1",
  "private": true,
  "dependencies": {
-  "aws-sdk": "latest",
-  "body-parser": "latest",
-  "bootstrap": "^4.0.0",
   "express": "latest",
   "request": "^2.85.0",
   "url": "^0.11.0"
