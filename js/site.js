@@ -803,16 +803,23 @@ function ShowDetails(result, status) {
         var twitterText = "Check out " + _dResult.name;
 
         if (!ObjectEmpty(_dResult.formatted_address))
-            twitterText += " located at " + _dResult.formatted_address + ". ";
+            twitterText += " located at " + _dResult.formatted_address + ". Website:";
 
+        var twitterUrl = "";
         if (!ObjectEmpty(_dResult.website))
-            twitterText += "Website: " + _dResult.website + "%23TravelAndEntertainmentSearch. ";
+            twitterUrl = _dResult.website;
         else
-            twitterText += "Website: " + _dResult.url + "%23TravelAndEntertainmentSearch. ";
+            twitterUrl = _dResult.url;
+
+        var twitterHashtag = "TravelAndEntertainmentSearch";
 
         twitterText = encodeURIComponent(twitterText);
+        twitterUrl = encodeURIComponent(twitterUrl);
+
         twitterText = twitterText.replace(/#/g, "%23");
-        $("#twitterIntent").attr("href", "https://twitter.com/share?ref_src=twsrc%5Etfw&text=" + twitterText);
+        twitterUrl = twitterUrl.replace(/#/g, "%23");
+
+        $("#twitterIntent").attr("href", "https://twitter.com/share?ref_src=twsrc%5Etfw&text=" + twitterText + "&url=" + twitterUrl + "&hashtags=" + twitterHashtag);
 
         FillInfoDiv();
         FillPhotosDiv();
