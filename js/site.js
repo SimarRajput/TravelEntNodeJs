@@ -846,8 +846,12 @@ function FillInfoDiv() {
     if (ObjectEmpty(_dResult.international_phone_number))
         $("#phoneInfoRow").hide();
     else
-        $("#phoneInfo").html(_dResult.international_phone_number);
-
+    {
+        var phoneAnchor = document.createElement("a");
+        phoneAnchor.href = "tel:" + _dResult.international_phone_number;
+        phoneAnchor.innerHTML = _dResult.international_phone_number;
+        $("#phoneInfo").html(phoneAnchor);
+    }
     if (ObjectEmpty(_dResult.price_level))
         $("#priceInfoRow").hide();
     else {
