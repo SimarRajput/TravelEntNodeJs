@@ -806,10 +806,11 @@ function ShowDetails(result, status) {
             twitterText += " located at " + _dResult.formatted_address + ". ";
 
         if (!ObjectEmpty(_dResult.website))
-            twitterText += "Website: " + _dResult.website + "#TravelAndEntertainmentSearch. ";
+            twitterText += "Website: " + _dResult.website + "%23TravelAndEntertainmentSearch. ";
         else
-            twitterText += "Website: " + _dResult.url + "#TravelAndEntertainmentSearch. ";
+            twitterText += "Website: " + _dResult.url + "%23TravelAndEntertainmentSearch. ";
 
+        twitterText = twitterText.replace(/#/g, "%23");
         $("#twitterIntent").attr("href", "https://twitter.com/share?ref_src=twsrc%5Etfw&text=" + twitterText);
 
         FillInfoDiv();
