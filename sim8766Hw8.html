@@ -121,10 +121,10 @@
             <div id="progressBar" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         <div class="tab-content container-fluid" id="pills-tabContent" style="width: 85%">
-            <div id="detailsDiv" style="width: 100%; margin: 10px auto; display: none;" class="details-animate-hide" ng-hide="myValue">
+            <div id="detailsDiv" style="width: 100%; margin: 10px auto; display: none;" class="details-animate-hide" ng-hide="detDivValue">
                 <div id="headInfoDiv" style="width: 100%; margin: 10px auto; text-align:center;">
                     <h4 id="infoHeading"></h4>
-                    <button class="btn btn-light" id="showListButton" onclick="HideDetailsDiv()" style="float: left;" ng-click="myValue=true">< List</button>
+                    <button class="btn btn-light" id="showListButton" onclick="HideDetailsDiv()" style="float: left;" ng-click="detDivValue=true">< List</button>
                     <a href="" data-show-count="false" id ="twitterIntent" target="_blank" style="float: right; max-width: 38px; max-height: 38px">
                         <img src="images/twitter.png" class="img-fluid" alt="Twitter">
                     </a>
@@ -237,8 +237,8 @@
                                     Google Reviews
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button class="dropdown-item" onclick="FillReviewsDiv()" type="button">Google Reviews</button>
-                                    <button class="dropdown-item" onclick="ShowYelpReviews()" type="button">Yelp Reviews</button>
+                                    <button id="googleReviewsButton" class="dropdown-item" ng-click="show=true" type="button">Google Reviews</button>
+                                    <button id="yelpReviewsButton" class="dropdown-item" ng-click="show=true" type="button">Yelp Reviews</button>
                                 </div>
                             </div>
                             <div class="btn-group">
@@ -253,14 +253,14 @@
                                     <button onclick="SortReviews(this.value)" class="dropdown-item" value="least_recent" type="button">Least Recent</button>
                                 </div>
                             </div>
-                            <div id="insideReviewsDiv" class="reviewContainer"></div>
+                            <div id="insideReviewsDiv" ng-hide="show" class="reviewContainer fade-in-out"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="divResult" class="results-animate-hide table-responsive tab-pane fade show active" ng-hide="!myValue" style="width:100%; margin: 0px auto; display:none" role="tabpanel" aria-labelledby="divresultTab" >
+            <div id="divResult" class="results-animate-hide table-responsive tab-pane fade show active" ng-hide="!detDivValue" style="width:100%; margin: 0px auto; display:none" role="tabpanel" aria-labelledby="divresultTab" >
                 <div id="detailsButtonDiv" style="width:100%; margin: 0px auto;">
-                    <button id="detailsButton" class="btn btn-light" ng-click="myValue=false" disabled style="float:right; margin-bottom: 10px;">Details ></button>
+                    <button id="detailsButton" class="btn btn-light" ng-click="detDivValue=false" disabled style="float:right; margin-bottom: 10px;">Details ></button>
                 </div>
                 <div id="innerDivResult" style="width:100%; margin: 0px auto"></div>
                 <br>
@@ -273,9 +273,9 @@
                     </button>
                 </div>
             </div>
-            <div id="divFavourite" class="results-animate-hide table-responsive tab-pane fade"  ng-hide="!myValue" style="width:100%; margin: 0px auto; display:none" role="tabpanel" aria-labelledby="divFavouriteTab">
+            <div id="divFavourite" class="results-animate-hide table-responsive tab-pane fade"  ng-hide="!detDivValue" style="width:100%; margin: 0px auto; display:none" role="tabpanel" aria-labelledby="divFavouriteTab">
                 <div id="favDetailsButtonDiv" style="width:100%; margin: 0px auto">
-                        <button id="favDetailsButton" class="btn btn-light" ng-click="myValue=false" disabled style="float:right; margin-bottom: 10px;">Details ></button>
+                        <button id="favDetailsButton" class="btn btn-light" ng-click="detDivValue=false" disabled style="float:right; margin-bottom: 10px;">Details ></button>
                 </div>
                 <div id="innerDivFavourite" style="width:100%; margin: 0px auto"></div>
                 <div id="favPageButtons" style="display: none;" class="form-group row justify-content-center">

@@ -1,6 +1,7 @@
 var app = angular.module("myApp", ["ngAnimate"]);
 app.controller("MainCtrl", function ($scope) {
-    $scope.myValue = true;
+    $scope.detDivValue = true;
+    $scope.show = false;
 });
 
 var _urlQueryEnum =
@@ -221,7 +222,7 @@ $(function () {
 
         var scope = angular.element($("body")).scope();
         scope.$apply(function () {
-            scope.myValue = true;
+            scope.detDivValue = true;
         });
 
         RefreshTable();
@@ -237,7 +238,7 @@ $(function () {
 
         var scope = angular.element($("body")).scope();
         scope.$apply(function () {
-            scope.myValue = true;
+            scope.detDivValue = true;
         });
 
         FillFavouriteTable();
@@ -302,7 +303,7 @@ $(function () {
 
         var scope = angular.element($("#sDetailButton")).scope();
         scope.$apply(function () {
-            scope.myValue = false;
+            scope.detDivValue = false;
         })
     });
 
@@ -312,16 +313,34 @@ $(function () {
 
         var scope = angular.element($("#sDetailButton")).scope();
         scope.$apply(function () {
-            scope.myValue = false;
+            scope.detDivValue = false;
         })
+    });
+
+    $("#googleReviewsButton").click(function () {
+        var scope = angular.element($("body")).scope();
+        scope.$apply(function () {
+            scope.show = false;
+        });
+
+        FillReviewsDiv();
+    });
+
+    $("#yelpReviewsButton").click(function () {
+        var scope = angular.element($("body")).scope();
+        scope.$apply(function () {
+            scope.show = false;
+        });
+
+        ShowYelpReviews();
     });
 });
 
 function SearchData() {
     var scope = angular.element($("body")).scope();
     scope.$apply(function () {
-        scope.myValue = true;
-    })
+        scope.detDivValue = true;
+    });
     ClearTablesFromStorage();
     $('#divResultTab').tab('show');
     $("#detailsDiv").hide();
@@ -681,23 +700,29 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
             var cell = row.insertCell(-1);
             cell.innerHTML = _favRowCount + 1;
             cell.accessKey = parsedRow[0].accessKey;
+            cell.classList.add("align-middle");
 
             var cell = row.insertCell(-1);
             cell.innerHTML = parsedRow[1].innerHTML;
+            cell.classList.add("align-middle");
 
             var cell = row.insertCell(-1);
             cell.innerHTML = parsedRow[2].innerHTML;
             cell.accessKey = parsedRow[2].accessKey;
+            cell.classList.add("align-middle");
 
             var cell = row.insertCell(-1);
             cell.innerHTML = parsedRow[3].innerHTML;
+            cell.classList.add("align-middle");
 
             var cell = row.insertCell(-1);
             cell.style.textAlign = "left";
+            cell.classList.add("align-middle");
             cell.innerHTML = "<button id=\"trashButton\" style=\"border: 1px solid #807d7d56;\" class=\"btn btn-default\"><span class=\"fas fa-trash-alt\"></span></button>";
 
             var cell = row.insertCell(-1);
             cell.style.textAlign = "left";
+            cell.classList.add("align-middle");
             cell.innerHTML = parsedRow[5].innerHTML;
 
             _favRowCount += 1;
@@ -1597,7 +1622,7 @@ function ClearLocation() {
 function ClearVariables(event) {
     var scope = angular.element($("body")).scope();
     scope.$apply(function () {
-        scope.myValue = true;
+        scope.detDivValue = true;
     })
 
     $("#divResult").hide();
