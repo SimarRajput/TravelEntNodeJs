@@ -21,7 +21,7 @@ input[type=radio]
 
 .highlight 
 { 
-    background-color:#fff3cd !important;
+    background-color: rgb(254, 223, 150) !important;
 }
 
 .details-animate-hide 
@@ -55,8 +55,6 @@ input[type=radio]
     right: -100%;
     transition: none;
 }
-  
-
 
 .photosRow 
 {
@@ -76,6 +74,13 @@ input[type=radio]
 {
     margin: 20px 0 0 0;
     overflow: auto
+}
+
+#insideReviewsDiv .fas.fa-star, #infoDiv .fas.fa-star
+{
+    color: rgb(233, 108, 28);
+    border-color: transparent;
+    font-size: 0.91em;
 }
 
 .fas.fa-star

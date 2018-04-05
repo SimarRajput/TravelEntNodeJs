@@ -1204,6 +1204,10 @@ function FillReviewsDiv() {
             ratingDate.style.marginBottom = "0px";
             ratingDate.style.display = "inline-block";
 
+            if(rating != 0 || rating != undefined){
+                ratingDate.style.marginLeft = "5px";
+            }
+
             detailsDiv.appendChild(ratingDate);
 
             var para = document.createElement("p");
