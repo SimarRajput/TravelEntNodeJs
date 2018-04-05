@@ -810,6 +810,7 @@ function ShowDetails(result, status) {
         else
             twitterText += "Website: " + _dResult.url + "%23TravelAndEntertainmentSearch. ";
 
+        twitterText = encodeURIComponent(twitterText);
         twitterText = twitterText.replace(/#/g, "%23");
         $("#twitterIntent").attr("href", "https://twitter.com/share?ref_src=twsrc%5Etfw&text=" + twitterText);
 
