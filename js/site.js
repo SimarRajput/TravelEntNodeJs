@@ -348,7 +348,10 @@ function HighlightRowInTable()
                 if(rows[i].childNodes[0].accessKey == _currentPlaceId) {
                     rows[i].classList.add("highlight");
                     $("#detailsButton").prop("disabled", false);
-                    break;
+                }
+                else
+                {
+                    rows[i].classList.remove("highlight");
                 }
             }
             $("#innerDivResult").html(table[0].outerHTML);
