@@ -827,6 +827,8 @@ function ShowDetails(result, status) {
         $("#right-panel").empty();
         $("#tMode").val("DRIVING");
         $("#fromText").val("Your Location");
+        _dirOriginLat = _globalLat;
+        _dirOriginLng = _globalLon;
         $("#noDirections").remove();
 
         $("#infoHeading").html(_dResult.name);
