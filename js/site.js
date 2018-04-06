@@ -822,6 +822,7 @@ function ShowDetails(result, status) {
         $("#detailsStarButton").prop("disabled", false);
         $("#twitterIntent").removeClass("disableAnchor");
         $("#right-panel").empty();
+        $("#tMode").val("DRIVING");
         $("#infoHeading").html(_dResult.name);
         var twitterText = "Check out " + _dResult.name;
 
