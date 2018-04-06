@@ -245,7 +245,7 @@ $(function () {
         FillFavouriteTable();
     });
 
-    $('#divResult').on("click", '#innerDivResult #resultsDataTable tr', function () {
+    $('#divResult').on("click", '#innerDivResult #resultsDataTable tr:not(:first)', function () {
         $(this).addClass("highlight").siblings().removeClass("highlight");
         var savedRow = $(this).closest('tr')[0];
 
@@ -268,7 +268,7 @@ $(function () {
         localStorage.setItem("table" + _pageCount, $("#resultsDataTable").get(0).outerHTML);
     });
 
-    $('#divFavourite').on("click", '#innerDivFavourite #favDataTable tr', function () {
+    $('#divFavourite').on("click", '#innerDivFavourite #favDataTable tr:not(:first)', function () {
         $(this).addClass("highlight").siblings().removeClass("highlight");
         var savedRow = $(this).closest('tr')[0];
 
