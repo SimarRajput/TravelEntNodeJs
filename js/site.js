@@ -365,6 +365,7 @@ function SearchData() {
     $("#detailsStarButton").prop("disabled", true);
     $("#fromText").val("Your Location");
     $("#noDirections").remove();
+    $("#tMode").val("DRIVING");
     $("#twitterIntent").addClass("disableAnchor");
     $('#divResultTab').tab('show');
     $("#detailsDiv").hide();
@@ -1679,6 +1680,7 @@ function ClearVariables(event) {
 
     $("#fromText").val("Your Location");
     $("#noDirections").remove();
+    $("#tMode").val("DRIVING");
     $("#keyWordText").focus();
     $("#keyWordText").val("");
     $("#category").val("default");
