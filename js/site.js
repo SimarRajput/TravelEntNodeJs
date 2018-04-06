@@ -363,6 +363,8 @@ function SearchData() {
     });
     ClearTablesFromStorage();
     $("#detailsStarButton").prop("disabled", true);
+    $("#fromText").val("Your Location");
+    $("#noDirections").remove();
     $("#twitterIntent").addClass("disableAnchor");
     $('#divResultTab').tab('show');
     $("#detailsDiv").hide();
@@ -1675,6 +1677,8 @@ function ClearVariables(event) {
     $("#divResult").hide();
     $("#searchButton").prop('disabled', true);
 
+    $("#fromText").val("Your Location");
+    $("#noDirections").remove();
     $("#keyWordText").focus();
     $("#keyWordText").val("");
     $("#category").val("default");
