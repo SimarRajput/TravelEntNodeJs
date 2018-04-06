@@ -337,6 +337,25 @@ $(function () {
     });
 });
 
+function HighlightRowInTable()
+{
+    var table = $.parseHTML($("#innerDivResult").html());
+    var rows = table[0].childNodes[1].childNodes;
+
+    if(!ObjectEmpty(rows)) {
+        if(rows.length > 0) {
+            for(var i = 0; i < rows.length; i++){
+                if(rows[i].childNodes[0].accessKey == _currentPlaceId) {
+                    rows[i].classList.add("highlight");
+                    $("#detailsButton").prop("disabled", false);
+                    break;
+                }
+            }
+            $("#innerDivResult").html(table[0].outerHTML);
+        }
+    }
+}
+
 function SearchData() {
     var scope = angular.element($("body")).scope();
     scope.$apply(function () {
@@ -540,6 +559,7 @@ function RefreshTable() {
     var table = localStorage.getItem("table" + _pageCount);
     if (table != undefined)
         $("#innerDivResult").html(table);
+    HighlightRowInTable();
     $("#divResult").show();
 }
 
