@@ -1018,6 +1018,7 @@ function FillPhotosDiv() {
 function FillMapDiv() {
     if ($("#radioOtherLocation").prop("checked") == true) {
         $("#fromText").val($("#locationText").val());
+        $("#directionsButton").prop("disabled", false);
     }
 
     if ($("#fromText").val().toLowerCase() == "your location" || $("#fromText").val().toLowerCase() == "my location") {
