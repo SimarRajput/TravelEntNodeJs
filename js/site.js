@@ -230,7 +230,7 @@ $(function () {
     });
 
     $("ul#pills-tab li #divFavouriteTab").click(function () {
-        _currentTab = "Favourite";
+        _currentTab = "Favorite";
         _favRowCount = 0;
         _prevPageStart = 0;
         $("#divResult").hide();
@@ -476,7 +476,7 @@ function CreateTableAndInsertRows(mainResults) {
             row.appendChild(headerCell);
 
             headerCell = document.createElement("th");
-            headerCell.innerHTML = "Favourite";
+            headerCell.innerHTML = "Favorite";
             row.appendChild(headerCell);
 
             headerCell = document.createElement("th");
@@ -700,7 +700,7 @@ function FillFavouriteTable(startRow = 0, rowsLength = _favPerPageRows) {
         row.appendChild(headerCell);
 
         headerCell = document.createElement("th");
-        headerCell.innerHTML = "Favourite";
+        headerCell.innerHTML = "Favorite";
         row.appendChild(headerCell);
 
         headerCell = document.createElement("th");
