@@ -823,6 +823,9 @@ function ShowDetails(result, status) {
         $("#twitterIntent").removeClass("disableAnchor");
         $("#right-panel").empty();
         $("#tMode").val("DRIVING");
+        $("#fromText").val("Your Location");
+        $("#noDirections").remove();
+
         $("#infoHeading").html(_dResult.name);
         var twitterText = "Check out " + _dResult.name;
 
